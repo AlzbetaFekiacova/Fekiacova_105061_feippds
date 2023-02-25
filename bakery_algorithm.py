@@ -13,6 +13,12 @@ choosing: list[:bool] = [False for _ in range(number_of_threads)]
 
 
 def process(tid: int, num_runs: int):
+    """ Simulates a process.
+
+    Arguments:
+        tid      -- thread id
+        num_runs -- number of executions of critical section
+    """
     global choosing, num
 
     for n in range(num_runs):
