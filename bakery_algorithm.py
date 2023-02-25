@@ -5,6 +5,7 @@ __email__ = "xfekiacova@stuba.sk, xvavro@stuba.sk"
 __licence__ = "MIT"
 
 from fei.ppds import Thread
+from time import sleep
 
 number_of_threads: int = 10
 num_list: list[int] = [0 for _ in range(number_of_threads)]
@@ -22,6 +23,7 @@ def process(tid: int):
         while num_list[j] != 0 and (num_list[j] < num_list[tid] or (
                 num_list[j] == num_list[tid] and j < tid)):
             continue
+    num_list[tid] = False
 
 
 if __name__ == '__main__':
