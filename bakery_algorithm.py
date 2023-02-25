@@ -12,26 +12,28 @@ num: list[int] = [0 for _ in range(number_of_threads)]
 choosing: list[:bool] = [False for _ in range(number_of_threads)]
 
 
-def process(tid: int):
+def process(tid: int, num_runs: int):
     global choosing, num
-    choosing[tid] = True
-    num[tid] = 1 + max(num)
-    choosing[tid] = False
 
-    for j in range(number_of_threads):
-        while choosing[j]:
-            continue
-        while (num[j] != 0 and (num[j] < num[tid] or (
-                num[j] == num[tid] and j < tid))):
-            continue
-    # execute critical section
-    print(f"Process {tid} runs a complicated computation!")
-    sleep(1)
-    # exit critical section
-    num[tid] = False
+    for n in range(num_runs):
+        choosing[tid] = True
+        num[tid] = 1 + max(num)
+        choosing[tid] = False
+
+        for j in range(number_of_threads):
+            while choosing[j]:
+                continue
+            while (num[j] != 0 and (num[j] < num[tid] or (
+                    num[j] == num[tid] and j < tid))):
+                continue
+        # execute critical section
+        print(f"Process {tid} runs a complicated computation!")
+        sleep(1)
+        # exit critical section
+        num[tid] = False
 
 
 if __name__ == '__main__':
     DEFAULT_NUM_OF_RUNS = 10
-    threads = [Thread(process, i) for i in range(number_of_threads)]
+    threads = [Thread(process, i, DEFAULT_NUM_OF_RUNS) for i in range(number_of_threads)]
     [t.join() for t in threads]
