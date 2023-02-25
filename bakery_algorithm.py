@@ -8,27 +8,27 @@ from fei.ppds import Thread
 from time import sleep
 
 number_of_threads: int = 10
-num_list: list[int] = [0 for _ in range(number_of_threads)]
-in_list: list[:bool] = [False for _ in range(number_of_threads)]
+num: list[int] = [0 for _ in range(number_of_threads)]
+choosing: list[:bool] = [False for _ in range(number_of_threads)]
 
 
 def process(tid: int):
-    global in_list, num_list
-    in_list[tid] = True
-    num_list[tid] = 1 + max(num_list)
-    in_list[tid] = False
+    global choosing, num
+    choosing[tid] = True
+    num[tid] = 1 + max(num)
+    choosing[tid] = False
 
     for j in range(number_of_threads):
-        while in_list[j]:
+        while choosing[j]:
             continue
-        while (num_list[j] != 0 and (num_list[j] < num_list[tid] or (
-                num_list[j] == num_list[tid] and j < tid))):
+        while (num[j] != 0 and (num[j] < num[tid] or (
+                num[j] == num[tid] and j < tid))):
             continue
     # execute critical section
     print(f"Process {tid} runs a complicated computation!")
     sleep(1)
     # exit critical section
-    num_list[tid] = False
+    num[tid] = False
 
 
 if __name__ == '__main__':
