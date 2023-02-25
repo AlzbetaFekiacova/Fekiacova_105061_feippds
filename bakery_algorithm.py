@@ -13,6 +13,7 @@ in_list: list[:bool] = [False for _ in range(number_of_threads)]
 
 
 def process(tid: int):
+    global in_list, num_list
     in_list[tid] = True
     num_list[tid] = 1 + max(num_list)
     in_list[tid] = False
