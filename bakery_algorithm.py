@@ -20,8 +20,8 @@ def process(tid: int):
     for j in range(number_of_threads):
         while in_list[j]:
             continue
-        while num_list[j] != 0 and (num_list[j] < num_list[tid] or (
-                num_list[j] == num_list[tid] and j < tid)):
+        while (num_list[j] != 0 and (num_list[j] < num_list[tid] or (
+                num_list[j] == num_list[tid] and j < tid))):
             continue
     # execute critical section
     print(f"Process {tid} runs a complicated computation!")
