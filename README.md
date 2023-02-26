@@ -66,7 +66,7 @@ The solution for problem of critical section must satisfy these four rules. I wi
    - Only the process with the lowest ticket number assigned enters the critical section (or in case of the same ticket number, with the lower process id). 
    - As there is only n number of process and the process ticket is assigned only once per trying to access the critical section, the decision will come within a deadline. 
 4. Processes entering the critical section cannot assume anything about the mutual timing (planning).
-   - This rule is a bit harder to explain, but essentially it means that the decision what process will enter the critical section is not relying on, and won't change if an interruption and replaying occurs.
+   - This rule is a bit harder to explain, but essentially it means that the decision what process will enter the critical section is not relying on, and won't change if an interruption and replanning occurs.
    - The most vulnerable for this problem is interruption at the begging, when a process is being assigned a ticket, but the corresponding value choosing has been already set to True. In this case, other process must wait for the process to finish the assignment of the ticket. No process can execute the critical section if any from the other process is having the ticket assigned.
 ---
 ## Conclusion
