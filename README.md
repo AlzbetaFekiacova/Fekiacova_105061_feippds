@@ -15,3 +15,11 @@
     
 2. Test your implementation
 3. Write documentation. Documentation should contain all necessary details about the implementation. Explain reason why Bakery algorithm is correct solution for mutual exclusion problem.
+---
+
+## TASK SOLUTION:
+
+Source code contains implementation of Bakery algorithm. The implementation can be found in file [bakery_algorithm.py](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/blob/01/bakery_algorithm.py "bakery_algorithm.py")
+
+To execute the program just run the file. It contains `if __name__ == "__main__"` idiom, so the program will be executed when you run the file. When you run the file, n number (currently 5) of threads will be created. Each of this thread will execute function named process, that simulates a process. The function process contains bakery algorithm implementation along side with execution of critical section. The threads are created and executed in a loop. Default number of runs is set to 10.
+
