@@ -70,4 +70,4 @@ The solution for problem of critical section must satisfy these four rules. I wi
    - The most vulnerable for this problem is interruption at the begging, when a process is being assigned a ticket, but the corresponding value choosing has been already set to True. In this case, other process must wait for the process to finish the assignment of the ticket. No process can execute the critical section if any from the other process is having the ticket assigned.
 ---
 ## Conclusion
-The Bakery algorithm is a correct solution to mutual exclusion problem for multiple number of process. It fulfills all four necessary conditions of correct implementation. 
+The Bakery algorithm is a correct solution to mutual exclusion problem for multiple number of process. It fulfills all four necessary conditions of a correct implementation. 
