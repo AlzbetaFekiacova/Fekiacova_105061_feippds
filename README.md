@@ -5,7 +5,7 @@
 1. Implement Bakery Algorithm. Source code must:
    - be compatible with Python 3.10
     
-   - contais module header with module description, author's name and licence
+   - contain module header with module description, author's name and licence
     
    - be comprehensive and well documented
     
