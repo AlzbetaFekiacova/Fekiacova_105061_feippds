@@ -7,7 +7,7 @@ __licence__ = "MIT"
 from fei.ppds import Thread
 from time import sleep
 
-number_of_threads: int = 10
+number_of_threads: int = 5
 num: list[int] = [0 for _ in range(number_of_threads)]
 choosing: list[:bool] = [False for _ in range(number_of_threads)]
 
