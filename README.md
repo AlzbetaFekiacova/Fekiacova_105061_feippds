@@ -49,3 +49,23 @@ The answer is rather simple. The process with the lowest ticket number may, and 
 If more processes have the same ticket number, then the process with lower process id is favored and may enter the critical section. 
 
 After the execution of the critical section, the corresponding ticket value in the num array of the process is changed back to its starting value, 0. So the process can get a new ticket if it wants to enter the critical section again.
+
+#### Correctness of Bakery Algorithm
+
+The solution for problem of critical section must satisfy these four rules. I will provide the rule first, then how it applies to the Bakery algorithm.
+
+1. In the critical section, no more than one process may be executed at one time.
+   - In Bakery algorithm this rule is satisfied by only letting the process with the lowest value in the num array to enter the critical section.
+   - If more than one process have the same ticket number, the process with lover process id enters the critical section. As the process id is unique for each process, this rule is fulfilled.
+2. Process that is being executing outside the critical section cannot prevent other processes entry to the critical section.
+   - This rule is satisfied because in the Bakery algorithm only the process itself can assign its own ticket number.
+   - Other processes cannot change the values assigned in the num array of other processes, so they cannot prevent other processes entry the critical section.
+3. The decision about the entry must come within a deadline.
+   - As the number of processes is n, that means that there is a final number of processes. 
+   - The processes are having their tickets assigned at the beginning with values form 1 to n+1. 
+   - Only the process with the lowest ticket number assigned enters the critical section (or in case of the same ticket number, with the lower process id). 
+   - As there is only n number of process and the process ticket is assigned only once per trying to access the critical section, the decision will come within a deadline. 
+4. Processes entering the critical section cannot assume anything about the mutual timing (planning).
+   - This rule is a bit harder to explain, but essentially it means that the decision what process will enter the critical section is not relying on, and won't change if an interruption and replaying occurs.
+   - The most vulnerable for this problem is interruption at the begging, when a process is being assigned a ticket, but the corresponding value choosing has been already set to True. In this case, other process must wait for the process to finish the assignment of the ticket. No process can execute the critical section if any from the other process is having the ticket assigned.
+   
