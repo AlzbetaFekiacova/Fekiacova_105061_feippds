@@ -55,8 +55,9 @@ After the execution of the critical section, the corresponding ticket value in t
 The solution for problem of critical section must satisfy these four rules. I will provide the rule first, then how it applies to the Bakery algorithm.
 
 1. In the critical section, no more than one process may be executed at one time.
-   - In Bakery algorithm this rule is satisfied by only letting the process with the lowest value in the num array to enter the critical section.
+   - In Bakery algorithm this rule is satisfied by only letting the process with the lowest ticket number (value in the num array) to enter the critical section.
    - If more than one process have the same ticket number, the process with lover process id enters the critical section. As the process id is unique for each process, this rule is fulfilled.
+   - Other process have to wait for their assigned ticket number to become the new lowest.
 2. Process that is being executing outside the critical section cannot prevent other processes entry to the critical section.
    - This rule is satisfied because in the Bakery algorithm only the process itself can assign its own ticket number.
    - Other processes cannot change the values assigned in the num array of other processes, so they cannot prevent other processes entry the critical section.
