@@ -24,7 +24,7 @@ Source code contains implementation of Bakery algorithm. The implementation can 
 To execute the program just run the file. It contains `if __name__ == "__main__"` idiom, so the program will be executed when you run the file. When you run the file, n number (currently 5) of threads will be created. Each of this thread will execute function named process, that simulates a process. The function process contains bakery algorithm implementation along side with execution of critical section. The threads are created and executed in a loop. Default number of runs is set to 10.
 
 ### What is Bakery Algorithm?
-Bakery algorithm is a algorthm that provides software solution for the problem of critical section. It is more suitable for larger number of processes (threads) compared to the Peterson algorithm. In comparison to the Ticket algorithm it does not depend on atomic instruction. 
+Bakery algorithm is a algorthm that provides software solution for the problem of mutual exclusion. It is more suitable for larger number of processes (threads) compared to the Peterson algorithm. In comparison to the Ticket algorithm it does not depend on any instruction to be atomic. 
 
 
 ### Implementation
@@ -52,7 +52,7 @@ After the execution of the critical section, the corresponding ticket value in t
 
 #### Correctness of Bakery Algorithm
 
-The solution for problem of critical section must satisfy these four rules. I will provide the rule first, then how it applies to the Bakery algorithm.
+The solution for problem of mutual exclusion must satisfy these four rules. I will provide the rule first, then how it applies to the Bakery algorithm.
 
 1. In the critical section, no more than one process may be executed at one time.
    - In Bakery algorithm this rule is satisfied by only letting the process with the lowest ticket number (value in the num array) to enter the critical section.
@@ -63,12 +63,20 @@ The solution for problem of critical section must satisfy these four rules. I wi
    - Other processes cannot change the values assigned in the num array of other processes, so they cannot prevent other processes entry the critical section.
 3. The decision about the entry must come within a deadline.
    - As the number of processes is n, that means that there is a final number of processes. 
-   - The processes are having their tickets assigned at the beginning with values form 1 to n+1. 
-   - Only the process with the lowest ticket number assigned enters the critical section (or in case of the same ticket number, with the lower process id). 
-   - As there is only n number of process and the process ticket is assigned only once per trying to access the critical section, the decision will come within a deadline. 
+   - As only one process may enter the critical section, other processes must wait. 
+   - They are waiting in two loops.
+     - First loop
+       - If a process is waiting in the first loop, it means that some other process is getting his ticket number assigned.
+       - We can believe that the planner is fair and the process that got replanned while getting the ticket will be planned in some time and will be able to finish getting the ticket.
+     - Second loop
+         - If a process is waiting in the second loop it can mean two things.
+         - It can mean that its ticket number is not the current lowest from the waiting process.
+         - It can also mean that the process ticket is the lowest, but the there is some other process with the same ticket number. In that case the process with the lower process id may enter the critical section.
+         - As I mention earlier, we can believe that the planner is fair, it plans the processes reasonably, and the process with the lowest ticket number will execute the critical section, change its ticket value to zero, so the process with next new lowest can enter the critical section and this wil also be planed in fair time and this will be repeated until all the waiting process have executed the critical section.
 4. Processes entering the critical section cannot assume anything about the mutual timing (planning).
    - This rule is a bit harder to explain, but essentially it means that the decision what process will enter the critical section is not relying on, and won't change if an interruption and replanning occurs.
-   - The most vulnerable for this problem is interruption at the begging, when a process is being assigned a ticket, but the corresponding value choosing has been already set to True. In this case, other process must wait for the process to finish the assignment of the ticket. No process can execute the critical section if any from the other process is having the ticket assigned.
+   - The most vulnerable for this problem is interruption at the begging, when a process is being assigned a ticket, but the corresponding value choosing has been already set to True. In this case, other process must wait for the process to finish the assignment of the ticket. No process can execute the critical section if any from the other process is having the ticket assigned. So if the planner won't plan this process stuck on assignment of the ticket, no process would be able to enter the critical section. So hypothetically this can last forever, but we rely on the planner to be fair.
+   - But essentially the order of processes is not relying on the planning, it is derived from the tickets of the processes.
 ---
 ## Conclusion
 The Bakery algorithm is a correct solution to mutual exclusion problem for multiple number of process. It fulfills all four necessary conditions of a correct implementation. 
