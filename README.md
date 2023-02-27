@@ -73,10 +73,11 @@ The solution for problem of mutual exclusion must satisfy these four rules. I wi
          - It can mean that its ticket number is not the current lowest from the waiting process.
          - It can also mean that the process ticket is the lowest, but the there is some other process with the same ticket number. In that case the process with the lower process id may enter the critical section.
          - As I mention earlier, we can believe that the planner is fair, it plans the processes reasonably, and the process with the lowest ticket number will execute the critical section, change its ticket value to zero, so the process with next new lowest can enter the critical section and this wil also be planed in fair time and this will be repeated until all the waiting process have executed the critical section.
+   - Based on those two loops, and their breaking to enter the critical section, we can say that the decision about the entry will come within a deadline.
 4. Processes entering the critical section cannot assume anything about the mutual timing (planning).
-   - This rule is a bit harder to explain, but essentially it means that the decision what process will enter the critical section is not relying on, and won't change if an interruption and replanning occurs.
-   - The most vulnerable for this problem is interruption at the begging, when a process is being assigned a ticket, but the corresponding value choosing has been already set to True. In this case, other process must wait for the process to finish the assignment of the ticket. No process can execute the critical section if any from the other process is having the ticket assigned. So if the planner won't plan this process stuck on assignment of the ticket, no process would be able to enter the critical section. So hypothetically this can last forever, but we rely on the planner to be fair.
-   - But essentially the order of processes is not relying on the planning, it is derived from the tickets of the processes.
+   - This rules tells us about that the decision for a process must come in a bounded time. It does not tell when, or how long the bounded time should be. It just tells us, that the process will eventually enter the critical section.
+   - However, we can't predict when the interruption comes. We cannot say how the planner is going to plan the processes. So in the worst case scenario, the process may not ever get to the critical section, as it may always be replanned. It can always get replanned during getting the ticket and by this, also block other processes from entering the critical section, but this scenario is highly unlikely. 
+   - As probability of that happening is very low and rare, we can say, that Bakery algorithm satisfies the fourth rule.
 ---
 ## Conclusion
 The Bakery algorithm is a correct solution to mutual exclusion problem for multiple number of process. It fulfills all four necessary conditions of a correct implementation. 
