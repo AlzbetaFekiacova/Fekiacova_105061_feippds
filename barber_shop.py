@@ -31,25 +31,25 @@ class Shared(object):
 
 
 def get_haircut(i: int):
-    # TODO: Simulate time and print info when customer gets haircut
+    """Simulate time and print info when customer gets haircut."""
     fei.ppds.print(f'Customer {i} is getting his hair cut.')
     sleep(3)
 
 
 def cut_hair():
-    # TODO: Simulate time and print info when barber cuts customer's hair
+    """Simulate time and print info when barber cuts customer's hair."""
     fei.ppds.print(f'Barber is cutting hair')
     sleep(4)
 
 
 def balk(i: int):
-    # TODO: Represents situation when waiting room is full and print info
+    """Simulate time and print info when the waiting room is full."""
     fei.ppds.print(f'Customer {i} cannot enter the waiting room, room is full.')
     sleep(5)
 
 
 def growing_hair(i: int):
-    # TODO: Represents situation when customer wait after getting haircut. So hair is growing and customer is sleeping for some time
+    """Simulates time and print info when the customer had is hair done and his hair is growing again."""
     fei.ppds.print(f'Customer {i} waits, hair is growing.')
     sleep(1)
 
