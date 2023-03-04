@@ -5,7 +5,7 @@
 1. Implement Barber problem with overrunning. Source code must:   
   
    -  be compatible with Python 3.10
-    
+
    - contain module header with module description, author's name and licence
     
    - be comprehensive and well documented
@@ -125,19 +125,23 @@ barber():
     customer_done.wait()
     barber_done.signal()
 ```
-The first pseudocode above represents behaviour of a customer, the second one represents behaviour of a barber.
+The first pseudocode above represents behaviour of a customer, the second one represents behaviour of a barber. In our solution the customers may outrun each-other. The order of getting a haircut does not depend on the order of taking seats in the waiting room. 
 
-For customer, we need to protect the integrity of the counter, as entering the barber shop or leaving it changes the number of available seats. That is why need to lock the mutex before accessing and modifying the number of waiting the customers.  
-If customer wants to sit in the Barber shop, he has to check whether there is any seat left. If there is none, the customer leaves and wait some time before checking again. This behaviour is represented by function balk().  
+As always, we need to protect the integrity of the counter. Entering the barber shop or leaving it, changes the number of available seats. That is why there is a necessity to lock the mutex before accessing and modifying the number of waiting the customers.  
+If customer wants to sit in the Barber shop, he has to check whether there is any seat left. If there is none, the customer leaves and wait some time before he checks it again. This behaviour is represented by function balk().  
 If there is a seat left, the customer sits and gives a signal that he is there and is waiting for the barber.  
-Then comes Rendez-vous or mutual signalisation. On customer side, he signals the barber that customer is here and waiting for the barber to call him. On barber's side. The barber is waiting for the customer and signaling him that he is free to take care of his hair.  
-After the Rendez-vous happens, the action of cutting hair and getting hair cut can happen.  
+
+Then comes Rendez-vous 1 or mutual signalisation. On customer side, he signals the barber that customer is here and waiting for the barber to call him. On barber's side. The barber is waiting for the customer and signaling him that he is free to take care of his hair.  
+After the first Rendez-vous happens, the action of cutting hair and getting hair cut can happen.  
 After the hair is cut, another Rendez-vous must happen.  
+
 The customer signals the barber that he is content with his hairstyle and waits for barber to finish. Barber, on the other hand, is waiting for the customer to finish and signaling that he is done with cutting the hair.  
-After this Rendez-vous is successful, the customer may leave.  
+After the second Rendez-vous is successful, the customer may leave.  
+
 He again needs to lock the mutex, so the integrity of the counter stays protected. Leave the room, reduce the counter by one and of course, unlock the mutex again.
 
-### Sources:
+---
+## Sources:
 - [Lecture 2022-02](https://www.youtube.com/watch?v=sR5RWW1uj5g&ab_channel=Paraleln%C3%A9programovanieadistribuovan%C3%A9syst%C3%A9my)
   
 - [Seminar 2021-06](https://www.youtube.com/watch?v=IOeO6RDhhac&ab_channel=Paraleln%C3%A9programovanieadistribuovan%C3%A9syst%C3%A9my)
