@@ -1,6 +1,6 @@
 """ This module contains an implementation of Barber problem."""
 
-__authors__ = "Marián Šebeňa, Matus Jokay, Alzbeta Fekiacova"
+__authors__ = "Marián Šebeňa, Matúš Jókay, Alžbeta Fekiačová"
 __email__ = "mariansebena@stuba.sk, xvavro@stuba.sk, xfekiacova@stuba.sk"
 __license__ = "MIT"
 
@@ -55,36 +55,41 @@ def growing_hair(i: int):
 
 
 def customer(i: int, shared: Shared):
+    """Simulates behaviour of a customer in an infinite loop.
+
+        Arguments:
+            i      -- customer id
+            shared -- Shared object which represents the barber shop
+    """
     global N
-    # TODO: Function represents customers behaviour. Customer come to waiting if room is full sleep.
-    # TODO: Wake up barber and waits for invitation from barber. Then gets new haircut.
-    # TODO: After it both wait to complete their work. At the end waits to hair grow again
 
     while True:
-        # TODO: Access to waiting room. Could customer enter or must wait? Be careful about counter integrity :)
-
         shared.mutex.lock()
         fei.ppds.print(f'Customer {i} entered the waiting room. \n'
                        f'There are {shared.waiting_room} customers.')
         if shared.waiting_room == N:
+            # waiting room is full
             shared.mutex.unlock()
             balk(i)
-
         else:
+            # customer sits
             shared.waiting_room += 1
             fei.ppds.print(f'Customer {i} sat in the waiting room')
             shared.mutex.unlock()
 
+            # Rendez-vous 1
             shared.customer.signal()
             shared.barber.wait()
-            # TODO: Rendezvous 1
+
             get_haircut(i)
-            # TODO: Rendezvous 2
+
+            # Rendez-vous 2
             shared.customer_done.signal()
             shared.barber_done.wait()
-            fei.ppds.print(f'Customer {i} finished getting a haircut.')
-            # TODO: Leave waiting room. Integrity again
 
+            fei.ppds.print(f'Customer {i} finished getting a haircut.')
+
+            # leaving the barber shop
             shared.mutex.lock()
             shared.waiting_room -= 1
             fei.ppds.print(f'Customer {i} left the room.')
