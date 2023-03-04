@@ -36,6 +36,8 @@ def get_haircut(i):
 
 def cut_hair():
 # TODO: Simulate time and print info when barber cuts customer's hair
+    fei.ppds.print(f'Barber is cutting hair')
+    sleep(1)
 
 
 def balk(i):
