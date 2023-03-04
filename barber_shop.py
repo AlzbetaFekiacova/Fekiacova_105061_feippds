@@ -42,7 +42,8 @@ def cut_hair():
 
 def balk(i):
 # TODO: Represents situation when waiting room is full and print info
-
+    fei.ppds.print(f'Customer {i} cannot enter the waiting room, room is full.')
+    sleep(2)
 
 def growing_hair(i):
 # TODO: Represents situation when customer wait after getting haircut. So hair is growing and customer is sleeping for some time
