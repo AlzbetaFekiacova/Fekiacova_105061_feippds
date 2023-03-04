@@ -16,16 +16,16 @@ N: int = 3
 
 
 class Shared(object):
+    """Object Shared to represent a Barber shop"""
 
     def __init__(self):
-        # TODO : Initialize patterns we need and variables
+        """
+        Class constructor initialize  creates 4 semaphores
+        for barber and customer states, creates Mutex object, and
+        waiting room counter.
+        """
         self.mutex: Mutex = Mutex()
         self.waiting_room: int = 0
-
-        # self.customer = Rendezvous is implemented as ?
-        # self.barber = Rendezvous is implemented as ?
-        # self.customer_done = Rendezvous is implemented as ?
-        # self.barber_done = Rendezvous is implemented as ?
         self.customer: Semaphore = Semaphore(0)
         self.barber: Semaphore = Semaphore(0)
         self.customer_done: Semaphore = Semaphore(0)
