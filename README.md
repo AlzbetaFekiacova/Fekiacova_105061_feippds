@@ -131,12 +131,12 @@ As always, we need to protect the integrity of the counter. Entering the barber 
 If customer wants to sit in the Barber shop, he has to check whether there is any seat left. If there is none, the customer leaves and wait some time before he checks it again. This behaviour is represented by function balk().  
 If there is a seat left, the customer sits and gives a signal that he is there and is waiting for the barber.  
 
-Then comes Rendez-vous 1 or mutual signalisation. On customer side, he signals the barber that customer is here and waiting for the barber to call him. On barber's side. The barber is waiting for the customer and signaling him that he is free to take care of his hair.  
-After the first Rendez-vous happens, the action of cutting hair and getting hair cut can happen.  
-After the hair is cut, another Rendez-vous must happen.  
+Then comes rendezvous 1 or mutual signalisation. On customer side, he signals the barber that customer is here and waiting for the barber to call him. On barber's side. The barber is waiting for the customer and signaling him that he is free to take care of his hair.  
+After the first rendezvous happens, the action of cutting hair and getting hair cut can happen.  
+After the hair is cut, another rendezvous must happen.  
 
 The customer signals the barber that he is content with his hairstyle and waits for barber to finish. Barber, on the other hand, is waiting for the customer to finish and signaling that he is done with cutting the hair.  
-After the second Rendez-vous is successful, the customer may leave.  
+After the second rendezvous is successful, the customer may leave.  
 
 He again needs to lock the mutex, so the integrity of the counter stays protected. Leave the room, reduce the counter by one and of course, unlock the mutex again.
 

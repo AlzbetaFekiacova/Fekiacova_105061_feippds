@@ -79,13 +79,13 @@ def customer(i: int, shared: Shared):
             fei.ppds.print(f'Customer {i} sat in the waiting room')
             shared.mutex.unlock()
 
-            # Rendez-vous 1
+            # rendezvous 1
             shared.customer.signal()
             shared.barber.wait()
 
             get_haircut(i)
 
-            # Rendez-vous 2
+            # rendezvous 2
             shared.customer_done.signal()
             shared.barber_done.wait()
 
@@ -106,13 +106,13 @@ def barber(shared: Shared):
         shared -- Shared object which represents the barber shop
     """
     while True:
-        # Rendez-vous 1
+        # rendezvous 1
         shared.customer.wait()
         shared.barber.signal()
 
         cut_hair()
 
-        # Rendez-vous 2
+        # rendezvous 2
         shared.customer_done.wait()
         shared.barber_done.signal()
 
