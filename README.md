@@ -13,4 +13,7 @@
    - each function (class and its methods) must have docstring in PEP 257
     
    - PEP 8
+2. Test your implementation.
+3. Write documentation. Documentation should contain all necessary details about the implementation. Example of your program input must also be part of it.
+4. In your final solution, set number of customers to 5 and number of waiting seats to 3.
 ---
