@@ -56,7 +56,7 @@ def balk(i):
 def growing_hair(i):
     # TODO: Represents situation when customer wait after getting haircut. So hair is growing and customer is sleeping for some time
     fei.ppds.print(f'Customer {i} waits, hair is growing.')
-    sleep(8)
+    sleep(1)
 
 
 def customer(i, shared):
@@ -69,28 +69,32 @@ def customer(i, shared):
         # TODO: Access to waiting room. Could customer enter or must wait? Be careful about counter integrity :)
 
         shared.mutex.lock()
-        fei.ppds.print(f'Customer {i} entered the waiting room')
+        fei.ppds.print(f'Customer {i} entered the waiting room. \n'
+                       f'There are {shared.waiting_room} customers.')
         if shared.waiting_room == N:
-            balk(i)
             shared.mutex.unlock()
-            continue
+            balk(i)
 
-        shared.waiting_room += 1
-        shared.mutex.unlock()
+        else:
+            shared.waiting_room += 1
+            fei.ppds.print(f'Customer {i} sat in the waiting room')
+            shared.mutex.unlock()
 
-        shared.customer.signal()
-        shared.barber.wait()
-        # TODO: Rendezvous 1
-        get_haircut(i)
-        # TODO: Rendezvous 2
-        shared.customer_done.signal()
-        shared.barber_done.wait()
-        # TODO: Leave waiting room. Integrity again
+            shared.customer.signal()
+            shared.barber.wait()
+            # TODO: Rendezvous 1
+            get_haircut(i)
+            # TODO: Rendezvous 2
+            shared.customer_done.signal()
+            shared.barber_done.wait()
+            fei.ppds.print(f'Customer {i} finished getting a haircut.')
+            # TODO: Leave waiting room. Integrity again
 
-        shared.mutex.lock()
-        shared.waiting_room -= 1
-        shared.mutex.unlock()
-        growing_hair(i)
+            shared.mutex.lock()
+            shared.waiting_room -= 1
+            fei.ppds.print(f'Customer {i} left the room.')
+            shared.mutex.unlock()
+            growing_hair(i)
 
 
 def barber(shared):
@@ -102,6 +106,7 @@ def barber(shared):
     while True:
         shared.customer.wait()
         shared.barber.signal()
+
         # TODO: Rendezvous 1
 
         cut_hair()
