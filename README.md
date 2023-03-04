@@ -136,3 +136,12 @@ After the hair is cut, another Rendez-vous must happen.
 The customer signals the barber that he is content with his hairstyle and waits for barber to finish. Barber, on the other hand, is waiting for the customer to finish and signaling that he is done with cutting the hair.  
 After this Rendez-vous is successful, the customer may leave.  
 He again needs to lock the mutex, so the integrity of the counter stays protected. Leave the room, reduce the counter by one and of course, unlock the mutex again.
+
+### Sources:
+- [Lecture 2022-02]((https://www.youtube.com/watch?v=sR5RWW1uj5g&ab_channel=Paraleln%C3%A9programovanieadistribuovan%C3%A9syst%C3%A9my))
+  
+- [Seminar 2021-06]((https://www.youtube.com/watch?v=IOeO6RDhhac&ab_channel=Paraleln%C3%A9programovanieadistribuovan%C3%A9syst%C3%A9my))
+  
+- [Seminar 2023-03](https://elearn.elf.stuba.sk/moodle/pluginfile.php/75802/mod_resource/content/1/PPDS_cv3.pdf)
+  
+- [A simple guide to The Sleeping Barber Problem]((https://www.youtube.com/watch?v=cArBsUK1ufQ&ab_channel=EliTadeo))
