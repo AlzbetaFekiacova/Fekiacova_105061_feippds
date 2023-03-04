@@ -17,20 +17,20 @@ class Shared(object):
 
     def __init__(self):
         # TODO : Initialize patterns we need and variables
-        self.mutex = Mutex()
-        self.waiting_room = 0
+        self.mutex: Mutex = Mutex()
+        self.waiting_room: int = 0
 
         # self.customer = Rendezvous is implemented as ?
         # self.barber = Rendezvous is implemented as ?
         # self.customer_done = Rendezvous is implemented as ?
         # self.barber_done = Rendezvous is implemented as ?
-        self.customer = Semaphore(0)
-        self.barber = Semaphore(0)
-        self.customer_done = Semaphore(0)
-        self.barber_done = Semaphore(0)
+        self.customer: Semaphore = Semaphore(0)
+        self.barber: Semaphore = Semaphore(0)
+        self.customer_done: Semaphore = Semaphore(0)
+        self.barber_done: Semaphore = Semaphore(0)
 
 
-def get_haircut(i):
+def get_haircut(i: int):
     # TODO: Simulate time and print info when customer gets haircut
     fei.ppds.print(f'Customer {i} is getting his hair cut.')
     sleep(3)
@@ -42,19 +42,19 @@ def cut_hair():
     sleep(4)
 
 
-def balk(i):
+def balk(i: int):
     # TODO: Represents situation when waiting room is full and print info
     fei.ppds.print(f'Customer {i} cannot enter the waiting room, room is full.')
     sleep(5)
 
 
-def growing_hair(i):
+def growing_hair(i: int):
     # TODO: Represents situation when customer wait after getting haircut. So hair is growing and customer is sleeping for some time
     fei.ppds.print(f'Customer {i} waits, hair is growing.')
     sleep(1)
 
 
-def customer(i, shared):
+def customer(i: int, shared: Shared):
     global N
     # TODO: Function represents customers behaviour. Customer come to waiting if room is full sleep.
     # TODO: Wake up barber and waits for invitation from barber. Then gets new haircut.
@@ -92,7 +92,7 @@ def customer(i, shared):
             growing_hair(i)
 
 
-def barber(shared):
+def barber(shared: Shared):
     # TODO: Function barber repres
     #  ents barber. Barber is sleeping.
     # TODO: When customer come to get new hair wakes up barber.
@@ -110,7 +110,6 @@ def barber(shared):
         shared.barber_done.signal()
 
         fei.ppds.print(f'Barber is done cutting hair')
-
 
 
 def main():
