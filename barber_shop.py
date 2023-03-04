@@ -57,9 +57,9 @@ def growing_hair(i: int):
 def customer(i: int, shared: Shared):
     """Simulates behaviour of a customer in an infinite loop.
 
-        Arguments:
-            i      -- customer id
-            shared -- Shared object which represents the barber shop
+    Arguments:
+        i      -- customer id
+        shared -- Shared object which represents the barber shop
     """
     global N
 
@@ -98,19 +98,19 @@ def customer(i: int, shared: Shared):
 
 
 def barber(shared: Shared):
-    # TODO: Function barber repres
-    #  ents barber. Barber is sleeping.
-    # TODO: When customer come to get new hair wakes up barber.
-    # TODO: Barber cuts customer hair and both wait to complete their work.
+    """Simulates behaviour of the barber in an infinite loop.
 
+    Argument:
+        shared -- Shared object which represents the barber shop
+    """
     while True:
+        # Rendez-vous 1
         shared.customer.wait()
         shared.barber.signal()
 
-        # TODO: Rendezvous 1
-
         cut_hair()
-        # TODO: Rendezvous 2
+
+        # Rendez-vous 2
         shared.customer_done.wait()
         shared.barber_done.signal()
 
