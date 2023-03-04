@@ -1,11 +1,6 @@
-"""
-Program represents different sequences of using mutex
-University: STU Slovak Technical University in Bratislava
-Faculty: FEI Faculty of Electrical Engineering and Information Technology
-Year: 2023
-"""
+""" This module contains an implementation of Barber problem."""
 
-__authors__ = "Marián Šebeňa, Alzbeta Fekiacova"
+__authors__ = "Marián Šebeňa, Matus Jokay, Alzbeta Fekiacova"
 __email__ = "mariansebena@stuba.sk, xvavro@stuba.sk, xfekiacova@stuba.sk"
 __license__ = "MIT"
 
