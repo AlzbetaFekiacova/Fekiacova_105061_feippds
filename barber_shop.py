@@ -9,7 +9,9 @@ from fei.ppds import Mutex, Thread, Semaphore, print
 from time import sleep
 from random import randint
 
+# global variable representing total number of customers
 C: int = 5
+# global variable representing number of seats in the Barber shop
 N: int = 3
 
 
@@ -127,9 +129,6 @@ def main():
 
     for t in customers + [hair_stylist]:
         t.join()
-
-
-# TODO: Global variables C = 5 numOfCustomers N = 3 sizeOfWaitingRoom
 
 
 if __name__ == "__main__":
