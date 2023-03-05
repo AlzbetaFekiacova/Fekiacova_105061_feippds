@@ -34,26 +34,26 @@ class Shared(object):
 
 def get_haircut(i: int):
     """Simulate time and print info when customer gets haircut."""
-    fei.ppds.print(f'Customer {i} is getting his hair cut.')
-    sleep(3)
+    fei.ppds.print(f'Customer -{i}- is getting his hair cut.')
+    sleep(4)
 
 
 def cut_hair():
     """Simulate time and print info when barber cuts customer's hair."""
-    fei.ppds.print(f'Barber is cutting hair')
+    fei.ppds.print(f'\nBarber is cutting hair.\n')
     sleep(4)
 
 
 def balk(i: int):
     """Simulate time and print info when the waiting room is full."""
-    fei.ppds.print(f'Customer {i} cannot enter the waiting room, room is full.')
-    sleep(5)
+    fei.ppds.print(f'Customer -{i}- cannot enter the waiting room, room is full.')
+    sleep(7)
 
 
 def growing_hair(i: int):
     """Simulates time and print info when the customer had is hair done and his hair is growing again."""
-    fei.ppds.print(f'Customer {i} waits, hair is growing.')
-    sleep(1)
+    fei.ppds.print(f'Customer -{i}- left, hair is growing.')
+    sleep(8)
 
 
 def customer(i: int, shared: Shared):
@@ -67,8 +67,7 @@ def customer(i: int, shared: Shared):
 
     while True:
         shared.mutex.lock()
-        fei.ppds.print(f'Customer {i} entered the waiting room. \n'
-                       f'There are {shared.waiting_room} customers.')
+        #fei.ppds.print(f'Customer -{i}- entered the barber shop. There are {shared.waiting_room} customers.')
         if shared.waiting_room == N:
             # waiting room is full
             shared.mutex.unlock()
@@ -76,7 +75,7 @@ def customer(i: int, shared: Shared):
         else:
             # customer sits
             shared.waiting_room += 1
-            fei.ppds.print(f'Customer {i} sat in the waiting room')
+            fei.ppds.print(f'Customer -{i}- sat in the waiting room. There are {shared.waiting_room} customers. ')
             shared.mutex.unlock()
 
             # rendezvous 1
@@ -89,12 +88,12 @@ def customer(i: int, shared: Shared):
             shared.customer_done.signal()
             shared.barber_done.wait()
 
-            fei.ppds.print(f'Customer {i} finished getting a haircut.')
+            # fei.ppds.print(f'\nCustomer -{i}- finished getting a haircut.')
 
             # leaving the barber shop
             shared.mutex.lock()
             shared.waiting_room -= 1
-            fei.ppds.print(f'Customer {i} left the room.')
+            # fei.ppds.print(f'Customer -{i}- left the room.')
             shared.mutex.unlock()
             growing_hair(i)
 
@@ -116,10 +115,11 @@ def barber(shared: Shared):
         shared.customer_done.wait()
         shared.barber_done.signal()
 
-        fei.ppds.print(f'Barber is done cutting hair')
+        # fei.ppds.print(f'\nBarber is done cutting hair.')
 
 
 def main():
+    print(f'Total number of customers: {C}\nNumber of seats: {N}')
     shared = Shared()
     customers = []
 
