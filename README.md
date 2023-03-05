@@ -145,6 +145,7 @@ He again needs to lock the mutex, so the integrity of the counter stays protecte
 ### Conclusion
 To demonstrate how the implementation works, I will explain the output of the code.
 ![img.png](img.png)
+
 On the picture above, we see that the total number of customers is 5 and number of seats in the barber shop is 3. It means that there can only be 3 customers in the barber shop, there are only 3 seats. One for the one whose hair is going to get cut (or now being cut) and the remaining two for those who are waiting. 
 
 Customers 0, 1, 2 can enter the room and take a seat and signal to the barber, that they need a haircut. 
