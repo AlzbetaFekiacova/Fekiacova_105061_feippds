@@ -141,6 +141,44 @@ After the second rendezvous is successful, the customer may leave.
 He again needs to lock the mutex, so the integrity of the counter stays protected. Leave the room, reduce the counter by one and of course, unlock the mutex again.
 
 ---
+
+### Conclusion
+To demonstrate how the implementation works, I will explain the output of the code.
+![img.png](img.png)
+On the picture above, we see that the total number of customers is 5 and number of seats in the barber shop is 3. It means that there can only be 3 customers in the barber shop, there are only 3 seats. One for the one whose hair is going to get cut (or now being cut) and the remaining two for those who are waiting. 
+
+Customers 0, 1, 2 can enter the room and take a seat and signal to the barber, that they need a haircut. 
+Customers 3 and 4 cannot enter the shop, as all the seats have already been taken.
+
+The barber woke up and started to cut hair of customer 2.
+
+We can see that after the barber finished cutting customer 2 hair, he  immediately started to cut hair of another customer (customer 1), but the message that customer 2 has left and is hair is growing again comes after the barber started to cut someone else's hair.
+It is because we cannot predict how the planner plans and interrupts the processes. 
+
+In the code, the barber waited for the customer 2 to finish and then signaled him that he has finished cutting hair.  
+Customer 2 signaled barber that he is finished and waited for the barber to finish.
+After they both finished, the planner interrupted the customer 2, but customer 2 has still not left the barber shop (e.g. taking his coat from the waiting room), but the barber was free to take care of customer 1 hair. 
+That is why we see the message Barber is cutting hair before the message Customer -2- left, hair is growing.
+
+Then the customer 1 is getting his hair cut.
+
+As the customer 2 has left, there is a free seat and customer 3 can sit.
+Customer 4 however, cannot, as again, all the seats have been taken.
+
+Again, same as before, the signalisation and waiting between the barber and customer 1 has happened and the barber started to cut hair of customer 0.
+Customer 1 left, freeing the seat for customer 2 whose hair has already grown.
+
+- We see that only 3 customers can be in the barber shop at one time. 
+- We see that there are more customer coming to the barber shop, that there are available seats.
+- At the begging of the execution, the barber sleeps.
+- After there is at least one customer the barber wakes up.
+- The barber can cut hair of only one customer.
+- The customers may overrun, the order of their hair getting cut is not dependent on the order how they have taken their seats.
+
+We have implemented the Barber shop following all the rules mentioned in the problem definition.
+
+
+---
 ## Sources:
 - [Lecture 2022-02](https://www.youtube.com/watch?v=sR5RWW1uj5g&ab_channel=Paraleln%C3%A9programovanieadistribuovan%C3%A9syst%C3%A9my)
   
