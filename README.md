@@ -65,7 +65,7 @@ The class shared represents a barber shop. In the code above, we see the constru
     
   - it represents number of how many people are already in the barber shop
     
-  - it can have values from 0 to N (number of seats in the shop)
+  - it can have values from 0 to N (number of seats in the shop, one is in the barber's room, others in the waiting room)
     
 - attribute customer (Semaphore):
   
