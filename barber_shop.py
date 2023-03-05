@@ -1,4 +1,4 @@
-""" This module contains an implementation of Barber problem."""
+"""This module contains an implementation of Barber problem."""
 
 __authors__ = "Marián Šebeňa, Matúš Jókay, Alžbeta Fekiačová"
 __email__ = "mariansebena@stuba.sk, xvavro@stuba.sk, xfekiacova@stuba.sk"
@@ -67,7 +67,6 @@ def customer(i: int, shared: Shared):
 
     while True:
         shared.mutex.lock()
-        #fei.ppds.print(f'Customer -{i}- entered the barber shop. There are {shared.waiting_room} customers.')
         if shared.waiting_room == N:
             # waiting room is full
             shared.mutex.unlock()
@@ -88,12 +87,9 @@ def customer(i: int, shared: Shared):
             shared.customer_done.signal()
             shared.barber_done.wait()
 
-            # fei.ppds.print(f'\nCustomer -{i}- finished getting a haircut.')
-
             # leaving the barber shop
             shared.mutex.lock()
             shared.waiting_room -= 1
-            # fei.ppds.print(f'Customer -{i}- left the room.')
             shared.mutex.unlock()
             growing_hair(i)
 
@@ -114,8 +110,6 @@ def barber(shared: Shared):
         # rendezvous 2
         shared.customer_done.wait()
         shared.barber_done.signal()
-
-        # fei.ppds.print(f'\nBarber is done cutting hair.')
 
 
 def main():
