@@ -164,15 +164,16 @@ That is why we see the message Barber is cutting hair before the message Custome
 Then the customer 1 is getting his hair cut.
 
 As the customer 2 has left, there is a free seat and customer 3 can sit.
-Customer 4 however, cannot, as again, all the seats have been taken.
+Customer 4 however, cannot, because again, all the seats have been taken.
 
 Again, same as before, the signalisation and waiting between the barber and customer 1 has happened and the barber started to cut hair of customer 0.
 Customer 1 left, freeing the seat for customer 2 whose hair has already grown.
 
 - We see that only 3 customers can be in the barber shop at one time. 
 - We see that there are more customer coming to the barber shop, that there are available seats.
-- At the begging of the execution, the barber sleeps.
-- After there is at least one customer the barber wakes up.
+- If all seats are taken, no more customers may enter the barber shop.
+- At the begging of the execution, the barber sleeps (he does nothing).
+- After there is at least one customer the barber wakes up and starts to cut hair.
 - The barber can cut hair of only one customer.
 - The customers may overrun, the order of their hair getting cut is not dependent on the order how they have taken their seats.
 
