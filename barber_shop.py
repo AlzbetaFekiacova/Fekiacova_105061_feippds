@@ -7,7 +7,6 @@ __license__ = "MIT"
 import fei.ppds
 from fei.ppds import Mutex, Thread, Semaphore, print
 from time import sleep
-from random import randint
 
 # global variable representing total number of customers
 C: int = 5
