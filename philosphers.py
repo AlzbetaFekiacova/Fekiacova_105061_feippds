@@ -10,11 +10,12 @@ from fei.ppds import Thread, Mutex, Semaphore, print
 from time import sleep
 
 NUM_PHILOSOPHERS: int = 5
-NUM_RUNS: int = 10  # number of repetitions of think-eat cycle of philosophers
+NUM_RUNS: int = 35  # number of repetitions of think-eat cycle of philosophers
 
 
 class Shared:
     """Represent shared data for all threads."""
+
     def __init__(self):
         """Initialize an instance of Shared."""
         self.forks = [Mutex() for _ in range(NUM_PHILOSOPHERS)]
@@ -47,12 +48,25 @@ def philosopher(i: int, shared: Shared):
     for _ in range(NUM_RUNS):
         think(i)
         # get forks
-        shared.forks[i].lock()
-        sleep(0.5)
-        shared.forks[(i+1) % NUM_PHILOSOPHERS].lock()
+        if i == 0:
+            shared.forks[(i + 1) % NUM_PHILOSOPHERS].lock()
+            sleep(0.5)
+            shared.forks[i].lock()
+            print(f'{i} got forks - left handed')
+        else:
+            shared.forks[i].lock()
+            sleep(0.5)
+            shared.forks[(i + 1) % NUM_PHILOSOPHERS].lock()
+            print(f'{i} got forks')
         eat(i)
-        shared.forks[i].unlock()
-        shared.forks[(i + 1) % NUM_PHILOSOPHERS].unlock()
+        if i == 0:
+            shared.forks[(i + 1) % NUM_PHILOSOPHERS].unlock()
+            shared.forks[i].unlock()
+            print(f'{i} returned forks - left handed')
+        else:
+            shared.forks[i].unlock()
+            shared.forks[(i + 1) % NUM_PHILOSOPHERS].unlock()
+            print(f'{i} returned forks')
 
 
 def main():
