@@ -54,6 +54,11 @@ class Shared:
         self.forks = [Mutex() for _ in range(NUM_PHILOSOPHERS)]
 ```
 The class Shared represents shared forks between the philosophers. Each fork is represented by a Mutex (Binary semaphore).  
-If a fork is unlocked, it means it is free to be taken by a philosopher. If a fork is locked, it means that the fork has already been taken by someone,=.
+If a fork is unlocked, it means it is free to be taken by a philosopher. If a fork is locked, it means that the fork has already been taken by someone.
+
+Actions eat (defined on line 35) and think (defined on line 42) represent the two actions that philosophers alternate between. The functions contain a print that includes the philosopher's id and the type of action. The functions also include a sleep call, so the function takes a little bit longer, or so that the philosopher's thread may be replaned while the function execution.
+
+
+
 ## Sources
 - [Image soucre](https://commons.wikimedia.org/w/index.php?curid=56559)
