@@ -42,3 +42,6 @@ Hoare modified the problem to form that we know today and that is object of out 
 On the picture above, we see that there is not enough of the forks for each of them to eat.
 
 The object of the problem is how to design a concurrent algorithm such that no philosopher would starve and each of the philosophers may alternate between eating and thinking forever.
+
+## Sources
+- [Image soucre](https://commons.wikimedia.org/w/index.php?curid=56559)
