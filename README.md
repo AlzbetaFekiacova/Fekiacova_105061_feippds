@@ -43,5 +43,17 @@ On the picture above, we see that there is not enough of the forks for each of t
 
 The object of the problem is how to design a concurrent algorithm such that no philosopher would starve and each of the philosophers may alternate between eating and thinking forever.
 
+### Implementation
+```python
+from fei.ppds import Mutex
+
+NUM_PHILOSOPHERS: int = 5
+
+class Shared:
+   def __init__(self):  
+        self.forks = [Mutex() for _ in range(NUM_PHILOSOPHERS)]
+```
+The class Shared represents shared forks between the philosophers. Each fork is represented by a Mutex (Binary semaphore).  
+If a fork is unlocked, it means it is free to be taken by a philosopher. If a fork is locked, it means that the fork has already been taken by someone,=.
 ## Sources
 - [Image soucre](https://commons.wikimedia.org/w/index.php?curid=56559)
