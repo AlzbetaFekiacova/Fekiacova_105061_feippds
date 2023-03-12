@@ -136,3 +136,5 @@ All the philosophers eventually eat, and their order is not dependent on waiter,
 
 ## Sources
 - [Image source](https://commons.wikimedia.org/w/index.php?curid=56559)
+- Seminar 2023 - 04
+- [Seminar 2022 - 03](https://www.youtube.com/watch?v=DgI8E_bVfBA&ab_channel=Paraleln%C3%A9programovanieadistribuovan%C3%A9syst%C3%A9my) 
