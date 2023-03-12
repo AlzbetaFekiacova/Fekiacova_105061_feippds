@@ -94,6 +94,35 @@ The source code from seminar can be found in file [philosophers_waiter.py](https
 ![](problem_waiter_img.png)
 On the image we see that if there is a guarantee that only 4 philosophers may be seated at one time at the table, at least one philosopher would eat.
 
+### Left-handed philosopher solution
+
+Our task was to implement another type of the solution. I have decided for the left-handed philosopher solution.  
+The idea behind the solution is that one philosopher is left-handed, meaning he starts to take the forks from the left.  
+For this solution we do not need to modify the class Shared, the solution relies only on the mutexes representing the forks.  
+What we need to modify is the philosopher's function.
+
+```python
+    def philosopher(i: int):       
+        think(i)  
+        if i == 0:            
+            shared.forks[(i + 1) % NUM_PHILOSOPHERS].lock()            
+            sleep(0.5)            
+            shared.forks[i].lock()        
+        else:            
+            shared.forks[i].lock()            
+            sleep(0.5)            
+            shared.forks[(i+1) % NUM_PHILOSOPHERS].lock()        
+        eat(i)        
+        shared.forks[i].unlock()        
+        shared.forks[(i + 1) % NUM_PHILOSOPHERS].unlock()
+```
+
+I have decided that the first philosopher is left-handed. That is why after the philosopher has finished thinking and want to eat, we check whether it is the first, left-handed, philosopher. The philosopher first takes the left fork and then the right one. Others take the forks in other direction.
+
+<p style="text-align:center;"><img width="270" src="C:\Users\fekia\PycharmProjects\PPDS\Fekiacova_105061_feippds\problem_lef-handed_img.png" width="500"/></p>
+  
+On the picture we see that by making one philosopher left-handed, one fork stays free for the first and last philosopher to compete over. Meaning that as in the solution with waiter, we have guaranteed that always at least one philosopher would eat.
+
 ## Sources
 
 - [Image soucre](https://commons.wikimedia.org/w/index.php?curid=56559)
