@@ -10,7 +10,7 @@ from fei.ppds import Thread, Mutex, Semaphore, print
 from time import sleep
 
 NUM_PHILOSOPHERS: int = 5
-NUM_RUNS: int = 35  # number of repetitions of think-eat cycle of philosophers
+NUM_RUNS: int = 10  # number of repetitions of think-eat cycle of philosophers
 
 
 class Shared:
