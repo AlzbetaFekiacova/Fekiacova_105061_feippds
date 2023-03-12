@@ -122,6 +122,17 @@ I have decided that the first philosopher is left-handed. That is why after the 
 ![](problem_lef-handed_img.png)  
 On the picture we see that by making one philosopher left-handed, one fork stays free for the first and last philosopher to compete over. Meaning that as in the solution with waiter, we have guaranteed that always at least one philosopher would eat.
 
-## Sources
+### Differences between the two implementations
+In the solution with a waiter we need to add one more Semaphore to be shared between all the philosophers. All 5 philosophers complete to get seated and then only 4 philosophers wait for their free forks.  
+The problem in this solution might be that the waiter would not give the seats fairly. It may happen that some philosophers would eat more frequently that the others and eventually starve. But it all depends on the planner and as we cannot predict how the planner will choose eating order of the philosophers, we cannot guarantee 100% correctness of this solution.
 
+In the solution with a left-handed philosopher, we do not need any extra Semaphore. All 5 philosophers wait for their forks to be free, so they can eat.  
+As was described earlier, and also showed on a picture, two philosophers (0 and 1) take compete in order to take the fork first. That's why the order of philosophers eating is permutation of (1, 2, 3, 4) alternating with (0,2,3,4). One time left-handed philosopher wins, next time, right-handed philosopher wins. At the end only philosopher 0 and 1 alternate to eat up all the portions that they did not have.
+![](philosophers_output.png)
+
+
+On the picture above we see output of eating only. We can notice 4 alternations of the permutations and the last 4 lines belong to philosopher 0 and philosopher 1 who are switching places, as they have not eaten as much as others.  
+All the philosophers eventually eat, and their order is not dependent on waiter, so we might consider this solution a slightly better one.
+
+## Sources
 - [Image source](https://commons.wikimedia.org/w/index.php?curid=56559)
