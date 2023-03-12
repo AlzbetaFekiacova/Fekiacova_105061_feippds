@@ -1,4 +1,5 @@
 """This module implements dinning philosophers problem.
+
     Problem is solved by usage of a waiter.
  """
 

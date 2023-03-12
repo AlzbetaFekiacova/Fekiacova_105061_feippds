@@ -1,6 +1,6 @@
 """This module implements dinning philosophers problem.
 
- The problem of deadlock is solved by making the first philosopher left-handed.
+    The problem of deadlock is solved by making the first philosopher left-handed.
  """
 
 __author__ = "Tomáš Vavro, Alžbeta Fekiačová"
