@@ -1,5 +1,6 @@
 """This module implements dinning philosophers problem.
- No solution is implemented.
+
+ The problem of deadlock is solved by making the first philosopher left-handed.
  """
 
 __author__ = "Tomáš Vavro, Alžbeta Fekiačová"
@@ -47,12 +48,13 @@ def philosopher(i: int, shared: Shared):
     """
     for _ in range(NUM_RUNS):
         think(i)
-        # get forks
         if i == 0:
+            # get forks left-handed philosopher
             shared.forks[(i + 1) % NUM_PHILOSOPHERS].lock()
             sleep(0.5)
             shared.forks[i].lock()
         else:
+            # get forks right-handed philosophers
             shared.forks[i].lock()
             sleep(0.5)
             shared.forks[(i + 1) % NUM_PHILOSOPHERS].lock()
