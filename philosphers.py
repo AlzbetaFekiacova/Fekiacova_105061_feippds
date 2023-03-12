@@ -52,21 +52,14 @@ def philosopher(i: int, shared: Shared):
             shared.forks[(i + 1) % NUM_PHILOSOPHERS].lock()
             sleep(0.5)
             shared.forks[i].lock()
-            print(f'{i} got forks - left handed')
         else:
             shared.forks[i].lock()
             sleep(0.5)
             shared.forks[(i + 1) % NUM_PHILOSOPHERS].lock()
-            print(f'{i} got forks')
         eat(i)
-        if i == 0:
-            shared.forks[(i + 1) % NUM_PHILOSOPHERS].unlock()
-            shared.forks[i].unlock()
-            print(f'{i} returned forks - left handed')
-        else:
-            shared.forks[i].unlock()
-            shared.forks[(i + 1) % NUM_PHILOSOPHERS].unlock()
-            print(f'{i} returned forks')
+        # return forks
+        shared.forks[i].unlock()
+        shared.forks[(i + 1) % NUM_PHILOSOPHERS].unlock()
 
 
 def main():
