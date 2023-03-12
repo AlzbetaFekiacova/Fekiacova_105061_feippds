@@ -3,28 +3,35 @@
 ## TASK SPECIFICATION:
 
 1. Implement solution of Dining Philosophers problem by:
-    - A) usage of right-handed and left-handed philosophers
-    - B) usage of token being passed after finish of eating to a neighbour
+  - A) usage of right-handed and left-handed philosophers
+  - B) usage of token being passed after finish of eating to a neighbour
 2. Source code must:   
   
-   -  be compatible with Python 3.10
+  -  be compatible with Python 3.10
+    
+  - contain module header with module description, author's name and licence
+    
+  - be comprehensive and well documented
+    
+  - each function (class and its methods) must have docstring in PEP 257
+    
+  - PEP 8
+    
+3. Test your implementation.
+  
+4. Write documentation. Documentation should contain all necessary details about the implementation.
+  
+5. Explain difference between your implementation and solution with a waiter.
+  
 
-   - contain module header with module description, author's name and licence
-    
-   - be comprehensive and well documented
-    
-   - each function (class and its methods) must have docstring in PEP 257
-    
-   - PEP 8
-2. Test your implementation.
-3. Write documentation. Documentation should contain all necessary details about the implementation. 
-4. Explain difference between your implementation and solution with a waiter.
 ---
+
 ## TASK SOLUTION:
 
 Source code contains implementation of a solution for the Dining Philosophers problem with usage of left-handed philosopher. The implementation can be found in file [philosophers.py](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/blob/03/philosphers.py)
 
 To execute the program you need to have  `fei.ppds` module installed. It can be done via `pip install --user fei.ppds`. Source code contains `if __name__ == "__main__"` idiom, so the program will be executed when you run the file. When you run the file, 5 threads will be created. One thread represents left-handed philosopher and others the right-handed ones. The treads execute their function in a loop. Default number of runs is set to 10.
+
 ### What is the Dining Philosophers problem?
 
 Dining Philosophers problem was introduced by Dijkstra in 1965 to illustrate the challenges of avoiding deadlock.  
@@ -37,28 +44,37 @@ Hoare modified the problem to form that we know today and that is object of out 
 - meal must be eaten with two forks
 - each philosopher may only alternate between eating or thinking
 
-![img.png](problem_img.png)
-
 On the picture above, we see that there is not enough of the forks for each of them to eat.
 
 The object of the problem is how to design a concurrent algorithm such that no philosopher would starve and each of the philosophers may alternate between eating and thinking forever.
 
 ### Implementation
 ```python
-from fei.ppds import Mutex
+from fei.ppds import Mutex  
 
-NUM_PHILOSOPHERS: int = 5
+NUM_PHILOSOPHERS: int = 5  
 
-class Shared:
-   def __init__(self):  
-        self.forks = [Mutex() for _ in range(NUM_PHILOSOPHERS)]
+class Shared:  
+   def __init__(self):       
+       self.forks = [Mutex() for _ in range(NUM_PHILOSOPHERS)]  
 ```
+
 The class Shared represents shared forks between the philosophers. Each fork is represented by a Mutex (Binary semaphore).  
 If a fork is unlocked, it means it is free to be taken by a philosopher. If a fork is locked, it means that the fork has already been taken by someone.
 
-Actions eat (defined on line 35) and think (defined on line 42) represent the two actions that philosophers alternate between. The functions contain a print that includes the philosopher's id and the type of action. The functions also include a sleep call, so the function takes a little bit longer, or so that the philosopher's thread may be replaned while the function execution.
+Actions eat (defined on line 33) and think (defined on line 42) represent the two actions that philosophers alternate between. The functions contain a print that includes the philosopher's id and the type of action. The functions also include a sleep call, so the function takes a little bit longer, or so that the philosopher's thread may be replaned while the function is being executed.
 
+Now we need a function to represent a philosopher's behaviour. The first idea might look like this:
 
+```python
+    def philosopher(i: int):        think(i)  
+        shared.forks[i].lock()        sleep(0.5)        shared.forks[(i+1) % NUM_PHILOSOPHERS].lock()        eat(i)        shared.forks[i].unlock()        shared.forks[(i + 1) % NUM_PHILOSOPHERS].unlock()  
+```
+
+At first glance we might not see a problem, however there is one.
+
+If every philosopher takes a fork to the right none of them is able to take also the left one, meaning none of the philosophers would be able to eat. None of the philosophers is able to continue in the code execution, meaning we got deadlock.
 
 ## Sources
+
 - [Image soucre](https://commons.wikimedia.org/w/index.php?curid=56559)
