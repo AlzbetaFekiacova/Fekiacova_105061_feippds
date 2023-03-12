@@ -43,7 +43,7 @@ Hoare modified the problem to form that we know today and that is object of out 
 - between each plate is a fork
 - meal must be eaten with two forks
 - each philosopher may only alternate between eating or thinking
-
+![](problem_img.png)
 On the picture above, we see that there is not enough of the forks for each of them to eat.
 
 The object of the problem is how to design a concurrent algorithm such that no philosopher would starve and each of the philosophers may alternate between eating and thinking forever.
@@ -67,13 +67,24 @@ Actions eat (defined on line 33) and think (defined on line 42) represent the tw
 Now we need a function to represent a philosopher's behaviour. The first idea might look like this:
 
 ```python
-    def philosopher(i: int):        think(i)  
-        shared.forks[i].lock()        sleep(0.5)        shared.forks[(i+1) % NUM_PHILOSOPHERS].lock()        eat(i)        shared.forks[i].unlock()        shared.forks[(i + 1) % NUM_PHILOSOPHERS].unlock()  
+    def philosopher(i: int):        
+        think(i)  
+        shared.forks[i].lock()        
+        sleep(0.5)        
+        shared.forks[(i+1) % NUM_PHILOSOPHERS].lock()        
+        eat(i)        
+        shared.forks[i].unlock()        
+        shared.forks[(i + 1) % NUM_PHILOSOPHERS].unlock()  
 ```
 
 At first glance we might not see a problem, however there is one.
 
 If every philosopher takes a fork to the right none of them is able to take also the left one, meaning none of the philosophers would be able to eat. None of the philosophers is able to continue in the code execution, meaning we got deadlock.
+
+![](problem_img_deadlock.png)
+On the image we see that each philosopher takes a fork (lock corresponding mutex) and his neighbour must wait for the philosopher to put the fork down (unlock the corresponding mutex) so he would be able to eat. Bu the philosopher would not put the fork down unless he finish eating. But the philosopher is able to eat only with two forks. We see that the no philosopher may continue with the execution. Each philosopher is stuck with one fork in the right hand unable to eat, meaning they would all starve and eventually die.  
+There are multiple ways how to solve this problem of a deadlock.  
+On a seminar we have been presented a solution using a waiter.
 
 ## Sources
 
