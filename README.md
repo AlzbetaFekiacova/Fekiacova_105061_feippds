@@ -86,6 +86,14 @@ On the image we see that each philosopher takes a fork (lock corresponding mutex
 There are multiple ways how to solve this problem of a deadlock.  
 On a seminar we have been presented a solution using a waiter.
 
+### Waiter solution
+
+Waiter would be presented by another attribute in the Shared class. He will be seating the philosophers. The waiter will give chair only to 4 (NUM_PHILOSOPHERS - 1) philosophers at one time. The philosophers compete to get seated.  
+To implement a waiter solution, we need to slightly modify both class shared and philosopher's function. We can represent the waiter by a Semaphore(NUM_PHILOSOPHERS - 1) that would be another attribute in the classed shared. Then before the philosopher takes the first fork, we need to make the philosopher to wait for the waiter to give him a seat. After the philosopher has finished eating, he signals it to the waiter.  
+The source code from seminar can be found in file [philosophers_waiter.py](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/blob/03/philosophers_waiter.py)  
+![](problem_waiter_img.png)
+On the image we see that if there is a guarantee that only 4 philosophers may be seated at one time at the table, at least one philosopher would eat.
+
 ## Sources
 
 - [Image soucre](https://commons.wikimedia.org/w/index.php?curid=56559)
