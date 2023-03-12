@@ -124,4 +124,4 @@ On the picture we see that by making one philosopher left-handed, one fork stays
 
 ## Sources
 
-- [Image soucre](https://commons.wikimedia.org/w/index.php?curid=56559)
+- [Image source](https://commons.wikimedia.org/w/index.php?curid=56559)
