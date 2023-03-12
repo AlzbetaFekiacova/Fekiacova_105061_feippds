@@ -119,8 +119,7 @@ What we need to modify is the philosopher's function.
 
 I have decided that the first philosopher is left-handed. That is why after the philosopher has finished thinking and want to eat, we check whether it is the first, left-handed, philosopher. The philosopher first takes the left fork and then the right one. Others take the forks in other direction.
 
-<p style="text-align:center;"><img width="270" src="C:\Users\fekia\PycharmProjects\PPDS\Fekiacova_105061_feippds\problem_lef-handed_img.png" width="500"/></p>
-  
+![](problem_lef-handed_img.png)  
 On the picture we see that by making one philosopher left-handed, one fork stays free for the first and last philosopher to compete over. Meaning that as in the solution with waiter, we have guaranteed that always at least one philosopher would eat.
 
 ## Sources
