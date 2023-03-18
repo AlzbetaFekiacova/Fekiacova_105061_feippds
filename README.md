@@ -39,4 +39,4 @@ reliable system in which all their actions will be announced. The multiple rules
    -   If the pot is full, the savages may start to feast again.
    -   The process is repeated in an endless cycle.
 
-
+![](savages_vegetarian.png)
