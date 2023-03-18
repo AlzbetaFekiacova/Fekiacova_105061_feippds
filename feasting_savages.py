@@ -1,3 +1,9 @@
+"""This module contains an implementation of Feasting Savages problem."""
+
+__authors__ = "Marián Šebeňa, Matúš Jókay, Tomáš Vavro, Alžbeta Fekiačová"
+__email__ = "mariansebena@stuba.sk, xvavro@stuba.sk, xfekiacova@stuba.sk"
+__license__ = "MIT"
+
 from fei.ppds import Thread, Mutex, Semaphore, print
 
 from time import sleep
@@ -66,6 +72,7 @@ def savage(i: int, shared: Shared):
         shared.barrier_2.wait(each=f'savage -{i}-: before the dinner',
                               last=f'savage -{i}- we are all')
         shared.mutex_1.lock()
+        print(f'Savage -{i}- comes, there is {shared.servings} left.')
         if shared.servings == 0:
             print(f'Savage -{i}- signals pot is empty.')
             shared.empty_pot.signal()
