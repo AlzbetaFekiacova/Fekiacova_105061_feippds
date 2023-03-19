@@ -100,6 +100,11 @@ First as was mentioned the savages eat only together. That is why we need a barr
 
 The barrier is a synchronisation mechanism that is a basically a generalisation of rendezvous for multiple threads. It is used for multiple threads to wait for each other in order to execute their job. We used it in order for the savages to start to eat only when all of them have already eaten. Meaning, that for example, it cannot happen that if there would be 2 savages, only one of them would be eating. Always, both of them need to finish eating their portion in order to start eating again.
 
+The next synchronisation mechanism used is Mutex.
+
+The Mutex is locking mechanism used to synchronise access to critical section. In our problem, the critical section is modification of content of the pot, that is shared between the savages and the chefs. In order to check or modify the number of portions, we need to lock the mutex as we want only one savage at one time to access the pot.
+
+
 
 
 
