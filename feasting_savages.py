@@ -47,10 +47,10 @@ class SimpleBarrier:
 
 
 class Shared:
-    def __init__(self, m):
+    def __init__(self, servings):
         self.savages_mutex = Mutex()
         self.chefs_mutex = Mutex()
-        self.servings = m
+        self.pot_portions = servings
 
         self.full_pot = Event()
         self.empty_pot = Event()
@@ -77,15 +77,15 @@ def savage(i: int, shared: Shared):
                                    f'have a look at the pot'
                                    f'.\n----------------------------------------------------------------------')
         shared.savages_mutex.lock()
-        print(f'SAVAGE-{i}-: Arrived, there is {shared.servings} portions left.')
-        if shared.servings == 0:
+        print(f'SAVAGE-{i}-: Arrived, there is {shared.pot_portions} portions left.')
+        if shared.pot_portions == 0:
             print(f'\nSAVAGE-{i}-: Signals pot is empty.\n')
             shared.empty_pot.signal()
             shared.full_pot.clear()
             shared.full_pot.wait()
 
-        shared.servings -= 1
-        print(f'Savage-{i}- Takes a portion, there are {shared.servings} portions left.')
+        shared.pot_portions -= 1
+        print(f'Savage-{i}- Takes a portion, there are {shared.pot_portions} portions left.')
         shared.savages_mutex.unlock()
         eat(i)
 
@@ -100,14 +100,14 @@ def cook(i: int, shared: Shared):
         shared.chefs_mutex.lock()
         shared.cooks_count += 1
 
-        if shared.servings < PORTIONS_COUNT:
-            shared.servings += 1
-            print(f'COOK-{i}-: Cooked a portion, now there are {shared.servings} servings.')
+        if shared.pot_portions < PORTIONS_COUNT:
+            shared.pot_portions += 1
+            print(f'COOK-{i}-: Cooked a portion, now there are {shared.pot_portions} servings.')
         else:
-            print(f'COOK-{i}-: Pot has {shared.servings} servings, it is full, I don\'t cook.')
+            print(f'COOK-{i}-: Pot has {shared.pot_portions} servings, it is full, I don\'t cook.')
 
-        if shared.servings == PORTIONS_COUNT and shared.cooks_count == CHEFS_COUNT:
-            print(f'COOK-{i}-: Signals pot is full, there are {shared.servings} servings in the pot. Capacity of pot is {PORTIONS_COUNT}.')
+        if shared.pot_portions == PORTIONS_COUNT and shared.cooks_count == CHEFS_COUNT:
+            print(f'COOK-{i}-: Signals pot is full, there are {shared.pot_portions} servings in the pot. Capacity of pot is {PORTIONS_COUNT}.')
             shared.cooks_count = 0
             shared.full_pot.signal()
             shared.empty_pot.clear()
