@@ -104,7 +104,17 @@ The next synchronisation mechanism used is Mutex.
 
 The Mutex is locking mechanism used to synchronise access to critical section. In our problem, the critical section is modification of content of the pot, that is shared between the savages and the chefs. In order to check or modify the number of portions, we need to lock the mutex as we want only one savage at one time to access the pot.
 
+As was described in the section before, about the class Shared, empty_pot and full_pot are Events. 
 
+Event is a synchronisation mechanism that is used to notify multiple waiting threads that something has happened, and they may continue with the code execution. As in our implementation, we have multiple chefs, as well as multiple savages, we have used Event for signalisation pot state between them.
+
+In the code snippet we see, that first the savage checks whether there are any portions left. 
+
+If the pot is empty, the savage signals to all the chefs that the pot is empty. Then the savage clears the full_pot event, so it may be later used by the chefs for signalisation. The savage then waits for the pot to be filled by chefs.
+
+If the pot is not empty, the savage may take his/her portion and as he/she finished modifying the pot content, the mutex may be unlocked. 
+
+The savage may then eat the portion he/she had taken from the pot before.
 
 
 
