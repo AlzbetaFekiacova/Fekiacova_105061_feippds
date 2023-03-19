@@ -8,13 +8,13 @@ from fei.ppds import Thread, Mutex, Semaphore, Event, print
 from time import sleep
 
 # savages
-SAVAGES_COUNT: int = 3
+SAVAGES_COUNT: int = 6
 
 # cooks
-CHEFS_COUNT: int = 5
+CHEFS_COUNT: int = 2
 
 # pot portions
-PORTIONS_COUNT: int = 2
+PORTIONS_COUNT: int = 8
 
 
 class SimpleBarrier:
@@ -78,6 +78,7 @@ def savage(i: int, shared: Shared):
                                    f'.\n----------------------------------------------------------------------')
         shared.savages_mutex.lock()
         print(f'SAVAGE-{i}-: Arrived, there is {shared.pot_portions} portions left.')
+
         if shared.pot_portions == 0:
             print(f'\nSAVAGE-{i}-: Signals pot is empty.\n')
             shared.empty_pot.signal()
@@ -96,18 +97,18 @@ def cook(i: int, shared: Shared):
         shared.barrier_2_cooks.wait(each=f'COOK-{i}-: Waiting for other chefs.',
                                     last=f'COOK-{i}-: Let\'s wait for the pot to be empty and cook.')
 
-        shared.empty_pot.wait()
         shared.chefs_mutex.lock()
         shared.cooks_count += 1
-
+        shared.empty_pot.wait()
         if shared.pot_portions < PORTIONS_COUNT:
             shared.pot_portions += 1
             print(f'COOK-{i}-: Cooked a portion, now there are {shared.pot_portions} servings.')
         else:
             print(f'COOK-{i}-: Pot has {shared.pot_portions} servings, it is full, I don\'t cook.')
 
-        if shared.pot_portions == PORTIONS_COUNT and shared.cooks_count == CHEFS_COUNT:
-            print(f'COOK-{i}-: Signals pot is full, there are {shared.pot_portions} servings in the pot. Capacity of pot is {PORTIONS_COUNT}.')
+        if shared.pot_portions == PORTIONS_COUNT:
+            print(f'COOK-{i}-: Signals pot is full, there are {shared.pot_portions} servings in the pot. Capacity of '
+                  f'pot is {PORTIONS_COUNT}.')
             shared.cooks_count = 0
             shared.full_pot.signal()
             shared.empty_pot.clear()
