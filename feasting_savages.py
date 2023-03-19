@@ -5,7 +5,6 @@ __email__ = "mariansebena@stuba.sk, xvavro@stuba.sk, xfekiacova@stuba.sk"
 __license__ = "MIT"
 
 from fei.ppds import Thread, Mutex, Semaphore, Event, print
-
 from time import sleep
 
 # savages
@@ -74,7 +73,9 @@ def savage(i: int, shared: Shared):
     while True:
         shared.barrier_1.wait()
         shared.barrier_2.wait(each=f'SAVAGE-{i}-: Came for dinner.',
-                              last=f'SAVAGE-{i}-: We are all, let\'s eat.')
+                              last=f'SAVAGE-{i}-: We are all, let\'s '
+                                   f'have a look at the pot'
+                                   f'.\n----------------------------------------------------------------------')
         shared.savages_mutex.lock()
         print(f'SAVAGE-{i}-: Arrived, there is {shared.servings} portions left.')
         if shared.servings == 0:
@@ -83,9 +84,8 @@ def savage(i: int, shared: Shared):
             shared.full_pot.clear()
             shared.full_pot.wait()
 
-        print(f'\nSAVAGE-{i}-: Takes a portion.')
         shared.servings -= 1
-        print(f'\nPOT   :{shared.servings} portions left.')
+        print(f'Savage-{i}- Takes a portion, there are {shared.servings} portions left.')
         shared.savages_mutex.unlock()
         eat(i)
 
@@ -93,8 +93,8 @@ def savage(i: int, shared: Shared):
 def cook(i: int, shared: Shared):
     while True:
         shared.barrier_1_cooks.wait()
-        shared.barrier_2_cooks.wait(each=f'COOK-{i}-: I am waiting for other chefs.',
-                                    last=f'COOK-{i}-: Let\'s cook.')
+        shared.barrier_2_cooks.wait(each=f'COOK-{i}-: Waiting for other chefs.',
+                                    last=f'COOK-{i}-: Let\'s wait for the pot to be empty and cook.')
 
         shared.empty_pot.wait()
         shared.chefs_mutex.lock()
@@ -102,13 +102,12 @@ def cook(i: int, shared: Shared):
 
         if shared.servings < PORTIONS_COUNT:
             shared.servings += 1
-            print(f'COOK-{i}-: I cooked a portion\nPOT: {shared.servings} servings')
+            print(f'COOK-{i}-: Cooked a portion, now there are {shared.servings} servings.')
         else:
-            print(f'COOK-{i}-: POT:-{shared.servings}- is full, I do not cook.')
+            print(f'COOK-{i}-: Pot has {shared.servings} servings, it is full, I don\'t cook.')
 
         if shared.servings == PORTIONS_COUNT and shared.cooks_count == CHEFS_COUNT:
-            print(f'COOK-{i}-: Signals pot is full.\n')
-            print(f'POT: {shared.servings} portions.\n')
+            print(f'COOK-{i}-: Signals pot is full, there are {shared.servings} servings in the pot. Capacity of pot is {PORTIONS_COUNT}.')
             shared.cooks_count = 0
             shared.full_pot.signal()
             shared.empty_pot.clear()
