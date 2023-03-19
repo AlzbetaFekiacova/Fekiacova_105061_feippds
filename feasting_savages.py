@@ -4,7 +4,7 @@ __authors__ = "Marián Šebeňa, Matúš Jókay, Tomáš Vavro, Alžbeta Fekiač
 __email__ = "mariansebena@stuba.sk, xvavro@stuba.sk, xfekiacova@stuba.sk"
 __license__ = "MIT"
 
-from fei.ppds import Thread, Mutex, Semaphore, print
+from fei.ppds import Thread, Mutex, Semaphore, Event, print
 
 from time import sleep
 
@@ -12,7 +12,7 @@ from time import sleep
 D: int = 3
 
 # cooks
-K: int = 1
+K: int = 5
 
 # pot portions
 H: int = 2
@@ -49,63 +49,87 @@ class SimpleBarrier:
 
 class Shared:
     def __init__(self, m):
-        self.mutex_1 = Mutex()
-        self.mutex_2 = Mutex()
+        self.savages_mutex = Mutex()
+        self.chefs_mutex = Mutex()
         self.servings = m
-        self.full_pot = Semaphore(0)
-        self.empty_pot = Semaphore(0)
+
+        self.full_pot = Event()
+        self.empty_pot = Event()
 
         self.barrier_1 = SimpleBarrier(D)
         self.barrier_2 = SimpleBarrier(D)
 
+        self.barrier_1_cooks = SimpleBarrier(K)
+        self.barrier_2_cooks = SimpleBarrier(K)
+
+        self.cooks_count = 0
+
 
 def eat(i: int):
-    print(f'Savage -{i}- started eating.')
+    print(f'SAVAGE-{i}- is feasting.')
     sleep(1)
-    print(f'Savage -{i}- finished eating.')
 
 
 def savage(i: int, shared: Shared):
-    sleep(1)
     while True:
         shared.barrier_1.wait()
-        shared.barrier_2.wait(each=f'savage -{i}-: before the dinner',
-                              last=f'savage -{i}- we are all')
-        shared.mutex_1.lock()
-        print(f'Savage -{i}- comes, there is {shared.servings} left.')
+        shared.barrier_2.wait(each=f'SAVAGE-{i}-: Came for dinner.',
+                              last=f'SAVAGE-{i}-: We are all, let\'s eat.')
+        shared.savages_mutex.lock()
+        print(f'SAVAGE-{i}-: Arrived, there is {shared.servings} portions left.')
         if shared.servings == 0:
-            print(f'Savage -{i}- signals pot is empty.')
+            print(f'\nSAVAGE-{i}-: Signals pot is empty.\n')
             shared.empty_pot.signal()
+            shared.full_pot.clear()
             shared.full_pot.wait()
-        print(f'Savage -{i}- takes a portion.')
+
+        print(f'\nSAVAGE-{i}-: Takes a portion.')
         shared.servings -= 1
-        shared.mutex_1.unlock()
+        print(f'\nPOT   :{shared.servings} portions left.')
+        shared.savages_mutex.unlock()
         eat(i)
 
 
-def cook(shared: Shared):
+def cook(i: int, shared: Shared):
     while True:
+        shared.barrier_1_cooks.wait()
+        shared.barrier_2_cooks.wait(each=f'COOK-{i}-: I am waiting for other chefs.',
+                                    last=f'COOK-{i}-: Let\'s cook.')
+
         shared.empty_pot.wait()
-        print(f'Cook cooks')
-        sleep(1)
-        print(f'cook cooked {H} portions --> pot')
-        shared.mutex_2.lock()
-        shared.servings += H
-        shared.mutex_2.unlock()
-        shared.full_pot.signal()
+        shared.chefs_mutex.lock()
+        shared.cooks_count += 1
+
+        if shared.servings < H:
+            shared.servings += 1
+            print(f'COOK-{i}-: I cooked a portion\nPOT: {shared.servings} servings')
+        else:
+            print(f'COOK-{i}-: POT:-{shared.servings}- is full, I do not cook.')
+
+        if shared.servings == H and shared.cooks_count == K:
+            print(f'COOK-{i}-: Signals pot is full.\n')
+            print(f'POT: {shared.servings} portions.\n')
+            shared.cooks_count = 0
+            shared.full_pot.signal()
+            shared.empty_pot.clear()
+        shared.chefs_mutex.unlock()
 
 
 def main():
     """Run main."""
-    print(f'NUMBER OF SAVAGES:{D}\nNUMBER OF COOKS:{K}\nPOT CAPACITY:{H}')
+    print(f'NUMBER OF SAVAGES:{D}\nNUMBER OF COOKS:{K}\nPOT CAPACITY:{H}\n')
     shared: Shared = Shared(0)
     savages: list[Thread] = [
         Thread(savage, i, shared) for i in range(D)
     ]
-    savages.append(Thread(cook, shared))
+    cooks: list[Thread] = [
+        Thread(cook, i, shared) for i in range(K)
+    ]
 
-    for s in savages:
-        s.join()
+    savages_and_cooks = savages + cooks
+
+    for p in savages_and_cooks:
+        p.join()
 
 
 if __name__ == "__main__":
