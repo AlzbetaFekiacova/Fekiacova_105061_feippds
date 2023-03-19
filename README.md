@@ -94,6 +94,12 @@ In this section I will explain the function that represents behaviour of the sav
         shared.savages_mutex.unlock() # integrity have been satisfied
         eat(i) # feast
 ```
+In the behaviour of the savage we can see all the synchronisation used in the implementation of the task.
+
+First as was mentioned the savages eat only together. That is why we need a barrier. We need a reusable barrier as the code is executed in an endless loop. The barrier implementation I have used was introduced on third seminar of the subject PPDS.
+
+The barrier is a synchronisation mechanism that is a basically a generalisation of rendezvous for multiple threads. It is used for multiple threads to wait for each other in order to execute their job. We used it in order for the savages to start to eat only when all of them have already eaten. Meaning, that for example, it cannot happen that if there would be 2 savages, only one of them would be eating. Always, both of them need to finish eating their portion in order to start eating again.
+
 
 
 
