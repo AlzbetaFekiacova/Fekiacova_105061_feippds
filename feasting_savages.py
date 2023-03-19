@@ -9,13 +9,13 @@ from fei.ppds import Thread, Mutex, Semaphore, Event, print
 from time import sleep
 
 # savages
-D: int = 3
+SAVAGES_COUNT: int = 3
 
 # cooks
-K: int = 5
+CHEFS_COUNT: int = 5
 
 # pot portions
-H: int = 2
+PORTIONS_COUNT: int = 2
 
 
 class SimpleBarrier:
@@ -56,11 +56,11 @@ class Shared:
         self.full_pot = Event()
         self.empty_pot = Event()
 
-        self.barrier_1 = SimpleBarrier(D)
-        self.barrier_2 = SimpleBarrier(D)
+        self.barrier_1 = SimpleBarrier(SAVAGES_COUNT)
+        self.barrier_2 = SimpleBarrier(SAVAGES_COUNT)
 
-        self.barrier_1_cooks = SimpleBarrier(K)
-        self.barrier_2_cooks = SimpleBarrier(K)
+        self.barrier_1_cooks = SimpleBarrier(CHEFS_COUNT)
+        self.barrier_2_cooks = SimpleBarrier(CHEFS_COUNT)
 
         self.cooks_count = 0
 
@@ -100,13 +100,13 @@ def cook(i: int, shared: Shared):
         shared.chefs_mutex.lock()
         shared.cooks_count += 1
 
-        if shared.servings < H:
+        if shared.servings < PORTIONS_COUNT:
             shared.servings += 1
             print(f'COOK-{i}-: I cooked a portion\nPOT: {shared.servings} servings')
         else:
             print(f'COOK-{i}-: POT:-{shared.servings}- is full, I do not cook.')
 
-        if shared.servings == H and shared.cooks_count == K:
+        if shared.servings == PORTIONS_COUNT and shared.cooks_count == CHEFS_COUNT:
             print(f'COOK-{i}-: Signals pot is full.\n')
             print(f'POT: {shared.servings} portions.\n')
             shared.cooks_count = 0
@@ -117,13 +117,13 @@ def cook(i: int, shared: Shared):
 
 def main():
     """Run main."""
-    print(f'NUMBER OF SAVAGES:{D}\nNUMBER OF COOKS:{K}\nPOT CAPACITY:{H}\n')
+    print(f'NUMBER OF SAVAGES:{SAVAGES_COUNT}\nNUMBER OF COOKS:{CHEFS_COUNT}\nPOT CAPACITY:{PORTIONS_COUNT}\n')
     shared: Shared = Shared(0)
     savages: list[Thread] = [
-        Thread(savage, i, shared) for i in range(D)
+        Thread(savage, i, shared) for i in range(SAVAGES_COUNT)
     ]
     cooks: list[Thread] = [
-        Thread(cook, i, shared) for i in range(K)
+        Thread(cook, i, shared) for i in range(CHEFS_COUNT)
     ]
 
     savages_and_cooks = savages + cooks
