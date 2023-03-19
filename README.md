@@ -43,3 +43,8 @@ reliable system in which all their actions will be announced. The multiple rules
    -   The process is repeated in an endless cycle.
 
 ![](savages_vegetarian.png)
+
+## Sources
+- [Seminar 2023-04](https://www.youtube.com/watch?v=54zi8qdBjdk&ab_channel=Mari%C3%A1n%C5%A0ebe%C5%88a)
+- [Seminar 2022-05](https://www.youtube.com/watch?v=iotYZJzxKf4&ab_channel=Paraleln%C3%A9programovanieadistribuovan%C3%A9syst%C3%A9my)
+- [Github of the course PPDS](https://github.com/tj314/ppds-2023-cvicenia)
