@@ -22,7 +22,7 @@
 ## TASK SOLUTION:
 Source code contains implementation of a solution for the Feasting Savages problem with multiple chefs. The implementation can be found in file [feasting_savages.py](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/blob/04/feasting_savages.py)
 
-To execute the program you need to have  `fei.ppds` module installed. It can be done via `pip install --user fei.ppds`. Source code contains `if __name__ == "__main__"` idiom, so the program will be executed when you run the file. When you run the file, 8 threads will be created. 5 threads represent the savages, the remaining three represent chefs. The treads execute their function in an infinite loop.
+To execute the program you need to have  `fei.ppds` module installed. It can be done via `pip install --user fei.ppds`. Source code contains `if __name__ == "__main__"` idiom, so the program will be executed when you run the file. When you run the file, 8 threads will be created. 5 threads represent the savages, the remaining three represent chefs. The treads execute their function in an infinite loop. Pot capacity is set to 8.
 
 ### What is the Feasting Savages problem?
 The Feasting Savages problem is another example of synchronisation problem in which we need to solve problem of mutual exclusion of different types of processes during program execution.
@@ -143,6 +143,10 @@ If the pot is full, the chef signals to the savages, that the pot is full, and h
 
 At the end, we can unlock the mutex, as the integrity has been satisfied.
 
+## Conclusion
+We have implemented solution for Savages problem with multiple chefs. Savages eat only together, they wait for each other, the chefs cook only when the pot is empty, each chef cooks only one serving. Chefs and savages do not mix up. 
+
+In the code, we used multiple synchronization mechanisms, that have been described in section Savage Behaviour.
 ## Sources
 - [Seminar 2023-04](https://www.youtube.com/watch?v=54zi8qdBjdk&ab_channel=Mari%C3%A1n%C5%A0ebe%C5%88a)
 - [Seminar 2022-05](https://www.youtube.com/watch?v=iotYZJzxKf4&ab_channel=Paraleln%C3%A9programovanieadistribuovan%C3%A9syst%C3%A9my)
