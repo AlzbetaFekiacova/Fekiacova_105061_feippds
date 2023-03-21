@@ -112,8 +112,36 @@ If the pot is not empty, the savage may take his/her portion and as he/she finis
 
 The savage may then eat the portion he/she had taken from the pot before.
 
+#### Chef behaviour
+Now we will focus on behaviour of a chef. As before, for the savage behaviour, I have removed the control prints to shorten the code and added the commentaries for better explanation.
+```python
+def cook(i: int, shared: Shared):
+    while True:
+        # the chefs are waiting for each other
+        shared.barrier_1_cooks.wait()
+        shared.barrier_2_cooks.wait()
+        shared.chefs_mutex.lock() # integrity of the pot
+        shared.empty_pot.wait() # wait for the pot to be empty
+        if shared.pot_portions < PORTIONS_COUNT: # if the pot is not full
+            shared.pot_portions += 1 # cook a portion
+        if shared.pot_portions == PORTIONS_COUNT: # if pot is full
+            shared.full_pot.signal() # signal to the savages that the pot is empty
+            shared.empty_pot.clear() # clear the event so it can be used again
+        shared.chefs_mutex.unlock() # integrity have been satisfied
+```
+In the code snippet, we see that the behaviour of a chef is quite similar to the behaviour of the savage, but chefs produce food to the pot.
 
+At first, the chefs wait for each other. 
+This was not specified in the task assignment, however, if there was no barrier for the cooks, it happened to me quiet a lot, that only part of the chefs was cooking. As we wanted each chef to produce a portion, I have decided to use a barrier. 
 
+When all the chefs gather around the pot, first thing that is needed is to lock the pot, so the integrity of the pot would not be violated.
+Then they wait for the pot to be empty, as the savages need to finish up all the pot, before the chefs may start to cook again.
+
+If there is still space, the chef may cook and put the portion in the pot.
+
+If the pot is full, the chef signals to the savages, that the pot is full, and he also clears the event for empty pot, so it can be signaled by the savages later.
+
+At the end, we can unlock the mutex, as the integrity has been satisfied.
 
 ## Sources
 - [Seminar 2023-04](https://www.youtube.com/watch?v=54zi8qdBjdk&ab_channel=Mari%C3%A1n%C5%A0ebe%C5%88a)
