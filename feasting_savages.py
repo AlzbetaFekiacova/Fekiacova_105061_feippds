@@ -8,13 +8,13 @@ from fei.ppds import Thread, Mutex, Semaphore, Event, print
 from time import sleep
 
 # savages
-SAVAGES_COUNT: int = 6
+SAVAGES_COUNT: int = 2
 
 # cooks
-CHEFS_COUNT: int = 2
+CHEFS_COUNT: int = 5
 
 # pot portions
-PORTIONS_COUNT: int = 8
+PORTIONS_COUNT: int = 3
 
 
 class SimpleBarrier:
@@ -61,8 +61,6 @@ class Shared:
         self.barrier_1_cooks = SimpleBarrier(CHEFS_COUNT)
         self.barrier_2_cooks = SimpleBarrier(CHEFS_COUNT)
 
-        self.cooks_count = 0
-
 
 def eat(i: int):
     print(f'SAVAGE-{i}- is feasting.')
@@ -98,18 +96,14 @@ def cook(i: int, shared: Shared):
                                     last=f'COOK-{i}-: Let\'s wait for the pot to be empty and cook.')
 
         shared.chefs_mutex.lock()
-        shared.cooks_count += 1
         shared.empty_pot.wait()
         if shared.pot_portions < PORTIONS_COUNT:
             shared.pot_portions += 1
             print(f'COOK-{i}-: Cooked a portion, now there are {shared.pot_portions} servings.')
-        else:
-            print(f'COOK-{i}-: Pot has {shared.pot_portions} servings, it is full, I don\'t cook.')
 
         if shared.pot_portions == PORTIONS_COUNT:
             print(f'COOK-{i}-: Signals pot is full, there are {shared.pot_portions} servings in the pot. Capacity of '
                   f'pot is {PORTIONS_COUNT}.')
-            shared.cooks_count = 0
             shared.full_pot.signal()
             shared.empty_pot.clear()
         shared.chefs_mutex.unlock()
