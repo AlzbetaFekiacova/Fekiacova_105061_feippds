@@ -59,9 +59,7 @@ class Shared:
         self.barrier_2 = SimpleBarrier(SAVAGES_COUNT)
 
         self.barrier_1_cooks = SimpleBarrier(CHEFS_COUNT)
-        self.barrier_2_cooks = SimpleBarrier(CHEFS_COUNT)
-
-        self.cooks_count = 0      
+        self.barrier_2_cooks = SimpleBarrier(CHEFS_COUNT)      
 ```
 The class Shared has been created and used to represent multiple information needed to be shared between the savages and the chefs. In the code snippet, we see the constructor of the class. I will explain what each of the attribute is used for in few lines.
 
@@ -74,8 +72,6 @@ In the task definition, it was mentioned that the savages eat only when they are
 For the chefs, as I understood from the task assignment, their behaviour was not specified, but to make the implementation easier it was recommended to force such a behavior also for the chefs. That is the reason why there is also another barrier for the chefs.
 
 The last thing we need is something for the signalisation. For the savages to notify the chefs, that the pot is empty and for the chefs to notify the savages that the pot is full, and they can feast.
-
-Last but not least, there is a variable cooks_count, that represents how many cooks have cooked or had a look at the full pot.
 
 #### Savage behaviour
 In this section I will explain the function that represents behaviour of the savages. The control prints have reduced to make the code shorter. The commentaries have been added for better explanation.
@@ -115,6 +111,7 @@ If the pot is empty, the savage signals to all the chefs that the pot is empty. 
 If the pot is not empty, the savage may take his/her portion and as he/she finished modifying the pot content, the mutex may be unlocked. 
 
 The savage may then eat the portion he/she had taken from the pot before.
+
 
 
 
