@@ -55,8 +55,8 @@ class Shared:
         self.full_pot = Event()
         self.empty_pot = Event()
 
-        self.barrier_1 = SimpleBarrier(SAVAGES_COUNT)
-        self.barrier_2 = SimpleBarrier(SAVAGES_COUNT)
+        self.barrier_1_savages = SimpleBarrier(SAVAGES_COUNT)
+        self.barrier_2_savages = SimpleBarrier(SAVAGES_COUNT)
 
         self.barrier_1_cooks = SimpleBarrier(CHEFS_COUNT)
         self.barrier_2_cooks = SimpleBarrier(CHEFS_COUNT)      
@@ -75,20 +75,21 @@ The last thing we need is something for the signalisation. For the savages to no
 
 #### Savage behaviour
 In this section I will explain the function that represents behaviour of the savages. The snippet have been reduced by control prints to make the code shorter. The commentaries have been added for better explanation.
+
 ```python
     while True:
-        # the savages are waiting for each other
-        shared.barrier_1.wait()
-        shared.barrier_2.wait()
-        shared.savages_mutex.lock() # integrity of the pot
-        if shared.pot_portions == 0: # there is no more portions 
-            shared.empty_pot.signal() # signal to the chefs that the pot is empty
-            shared.full_pot.clear() # clear the event so it can be used again
-            shared.full_pot.wait() # wait for the pot to be full
+# the savages are waiting for each other
+shared.barrier_1_savages.wait()
+shared.barrier_2_savages.wait()
+shared.savages_mutex.lock()  # integrity of the pot
+if shared.pot_portions == 0:  # there is no more portions 
+    shared.empty_pot.signal()  # signal to the chefs that the pot is empty
+    shared.full_pot.clear()  # clear the event so it can be used again
+    shared.full_pot.wait()  # wait for the pot to be full
 
-        shared.pot_portions -= 1 # take a portion 
-        shared.savages_mutex.unlock() # integrity have been satisfied
-        eat(i) # feast
+shared.pot_portions -= 1  # take a portion 
+shared.savages_mutex.unlock()  # integrity have been satisfied
+eat(i)  # feast
 ```
 In the behaviour of the savage we can see all the synchronisation mechanisms used in the implementation of the task.
 
