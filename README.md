@@ -74,7 +74,7 @@ For the chefs, as I understood from the task assignment, their behaviour was not
 The last thing we need is something for the signalisation. For the savages to notify the chefs, that the pot is empty and for the chefs to notify the savages that the pot is full, and they can feast.
 
 #### Savage behaviour
-In this section I will explain the function that represents behaviour of the savages. The control prints have reduced to make the code shorter. The commentaries have been added for better explanation.
+In this section I will explain the function that represents behaviour of the savages. The snippet have been reduced by control prints to make the code shorter. The commentaries have been added for better explanation.
 ```python
     while True:
         # the savages are waiting for each other
@@ -90,28 +90,34 @@ In this section I will explain the function that represents behaviour of the sav
         shared.savages_mutex.unlock() # integrity have been satisfied
         eat(i) # feast
 ```
-In the behaviour of the savage we can see all the synchronisation used in the implementation of the task.
+In the behaviour of the savage we can see all the synchronisation mechanisms used in the implementation of the task.
 
-First as was mentioned the savages eat only together. That is why we need a barrier. We need a reusable barrier as the code is executed in an endless loop. The barrier implementation I have used was introduced on third seminar of the subject PPDS.
+##### Barrier
+First of all, as was mentioned before, the savages eat only together. That is why we need a barrier. We need a reusable barrier as the code is executed in an endless loop. The barrier implementation I have used was introduced to us on third seminar of the subject PPDS by the lecturers.
 
-The barrier is a synchronisation mechanism that is a basically a generalisation of rendezvous for multiple threads. It is used for multiple threads to wait for each other in order to execute their job. We used it in order for the savages to start to eat only when all of them have already eaten. Meaning, that for example, it cannot happen that if there would be 2 savages, only one of them would be eating. Always, both of them need to finish eating their portion in order to start eating again.
+The barrier is a synchronisation mechanism that is a basically a generalisation of rendezvous for multiple threads. It is used for multiple threads to wait for each other in order to execute their job. We used it in order for the savages to start to eat only when all of them have already eaten. Meaning, that for example, it cannot happen that if there would be 2 savages, only one of them would be eating. Always, both of them need to finish eating their portion in order to start eating again. If one of them have finished eating, he has to wait at the barrier for the other savage to finish eating, so both of them may together pass through the barrier.
 
 The next synchronisation mechanism used is Mutex.
+
+##### Mutex
 
 The Mutex is locking mechanism used to synchronise access to critical section. In our problem, the critical section is modification of content of the pot, that is shared between the savages and the chefs. In order to check or modify the number of portions, we need to lock the mutex as we want only one savage at one time to access the pot.
 
 As was described in the section before, about the class Shared, empty_pot and full_pot are Events. 
 
-Event is a synchronisation mechanism that is used to notify multiple waiting threads that something has happened, and they may continue with the code execution. As in our implementation, we have multiple chefs, as well as multiple savages, we have used Event for signalisation pot state between them.
+##### Event
+
+Event is a synchronisation mechanism that is used to notify multiple waiting threads that something has happened, that some condition has become true. As in our implementation, we have multiple chefs, as well as multiple savages, we have used Event for signalisation pot state between them.  
 
 In the code snippet we see, that first the savage checks whether there are any portions left. 
 
-If the pot is empty, the savage signals to all the chefs that the pot is empty. Then the savage clears the full_pot event, so it may be later used by the chefs for signalisation. The savage then waits for the pot to be filled by chefs.
+If the pot is empty, condition is satisfied, the savage signals to all the chefs that the pot is empty. Then the savage clears the full_pot event, so it may be later used by the chefs for signalisation. The savage then waits for the pot to be filled by chefs.
 
 If the pot is not empty, the savage may take his/her portion and as he/she finished modifying the pot content, the mutex may be unlocked. 
 
 The savage may then eat the portion he/she had taken from the pot before.
 
+When the savage has fished eating, he/she then waits at the barrier for the remaining savages to finish eating as well.
 #### Chef behaviour
 Now we will focus on behaviour of a chef. As before, for the savage behaviour, I have removed the control prints to shorten the code and added the commentaries for better explanation.
 ```python
@@ -129,7 +135,7 @@ def cook(i: int, shared: Shared):
             shared.empty_pot.clear() # clear the event so it can be used again
         shared.chefs_mutex.unlock() # integrity have been satisfied
 ```
-In the code snippet, we see that the behaviour of a chef is quite similar to the behaviour of the savage, but chefs produce food to the pot.
+In the code snippet, we see that the behaviour of a chef is quite similar to the behaviour of the savage, but chefs do not take from the pot, but produce food to the pot.
 
 At first, the chefs wait for each other. 
 This was not specified in the task assignment, however, if there was no barrier for the cooks, it happened to me quiet a lot, that only part of the chefs was cooking. As we wanted each chef to produce a portion, I have decided to use a barrier. 
@@ -139,14 +145,34 @@ Then they wait for the pot to be empty, as the savages need to finish up all the
 
 If there is still space, the chef may cook and put the portion in the pot.
 
-If the pot is full, the chef signals to the savages, that the pot is full, and he also clears the event for empty pot, so it can be signaled by the savages later.
+If the pot is full, the chef signals to the savages, that the pot is full, and he also clears the event for empty pot, so it can be used later for signalisation by the savages.
 
 At the end, we can unlock the mutex, as the integrity has been satisfied.
 
-## Conclusion
-We have implemented solution for Savages problem with multiple chefs. Savages eat only together, they wait for each other, the chefs cook only when the pot is empty, each chef cooks only one serving. Chefs and savages do not mix up. 
+And again, as the savages, the chefs wait for each other at the barrier in order to wait together for signal of empty pot from the savages.
 
-In the code, we used multiple synchronization mechanisms, that have been described in section Savage Behaviour.
+## Conclusion
+We have implemented solution for Savages problem with multiple chefs. Savages eat only together, they wait for each other, the chefs cook only when the pot is empty, each chef cooks only one serving. Chefs and savages do not mix up, savages cannot eat while the chefs are cooking and chefs cannot cook when the savages are eating. 
+
+In the code, we used multiple synchronization mechanisms, that have been described in section Savage Behaviour. I will present the code behaviour on screenshots from the code output.
+![](SAVAGES_WAITING.png)
+On the top of the picture, we see that number of savages is 5, number of chefs is 3 and pot capacity is 8. At the beginning, the pot is empty.
+
+At first, chefs and savages are assembling around the pot. The blue line represents meeting point of the chefs. COOK-0 signals, that they are all. The yellow line on the other hand, represents meeting point of the savages.
+We see that after it was signalised, that all the savages are together, one of them is having a look at the pot. As the pot is empty, the savage who noticed signals it to the chefs.
+
+![](CHEFS_COOKING.png)
+
+The second screenshot shows cooking process of the chefs. Each of them put one portion to the pot. When all them have cooked, they wait for each other at the barrier. The orange line represent meeting point, where all them meets and the last chef signals to the remaining cooks that they are all and may cook again.
+At the end, we see that chef cooked, put a portion to the pot, and made the pot full. The pot fullness is signaled to the savages.
+
+![img.png](SAVAGES_FEASTING.png)
+
+On the picture above we see the feast itself. Each of the savages takes a portion and eat. The red lines represents barrier. The savages are coming to the barrier where they are waiting for each other. When the last savage arrives, he signals to others, they may have a look at the pot.
+
+![](SAVAGES_AND_CHEFS.png)
+On the last picture we see that after the savages met, they started to immediately eat as the pot was not empty. When they finished the pot, they signaled it to the cooks. Then the cooks started to cook again. They will be cooking again until one of them would put the last portion. Then again the savages would start eating and so on until the end of time.
+We can notice that once the cooks are putting portions into the pot, the savages do not eat and vice versa which is a correct behaviour.
 ## Sources
 - [Seminar 2023-04](https://www.youtube.com/watch?v=54zi8qdBjdk&ab_channel=Mari%C3%A1n%C5%A0ebe%C5%88a)
 - [Seminar 2022-05](https://www.youtube.com/watch?v=iotYZJzxKf4&ab_channel=Paraleln%C3%A9programovanieadistribuovan%C3%A9syst%C3%A9my)
