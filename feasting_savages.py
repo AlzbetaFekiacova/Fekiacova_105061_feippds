@@ -8,13 +8,13 @@ from fei.ppds import Thread, Mutex, Semaphore, Event, print
 from time import sleep
 
 # savages
-SAVAGES_COUNT: int = 2
+SAVAGES_COUNT: int = 5
 
 # cooks
-CHEFS_COUNT: int = 5
+CHEFS_COUNT: int = 3
 
 # pot portions
-PORTIONS_COUNT: int = 3
+PORTIONS_COUNT: int = 8
 
 
 class SimpleBarrier:
