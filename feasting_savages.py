@@ -103,7 +103,8 @@ def cook(i: int, shared: Shared):
 
         if shared.pot_portions == PORTIONS_COUNT:
             print(f'COOK-{i}-: Signals pot is full, there are {shared.pot_portions} servings in the pot. Capacity of '
-                  f'pot is {PORTIONS_COUNT}.')
+                  f'pot is {PORTIONS_COUNT}.'
+                  f'\n----------------------------------------------------------------------')
             shared.full_pot.signal()
             shared.empty_pot.clear()
         shared.chefs_mutex.unlock()
