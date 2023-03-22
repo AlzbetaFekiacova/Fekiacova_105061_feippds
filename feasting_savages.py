@@ -1,4 +1,4 @@
-"""This module contains an implementation of Feasting Savages problem."""
+"""This module contains an implementation of Feasting Savages problem with multiple cooks."""
 
 __authors__ = "Marián Šebeňa, Matúš Jókay, Tomáš Vavro, Alžbeta Fekiačová"
 __email__ = "mariansebena@stuba.sk, xvavro@stuba.sk, xfekiacova@stuba.sk"
@@ -18,12 +18,22 @@ PORTIONS_COUNT: int = 8
 
 
 class SimpleBarrier:
+    """ Reusable barrier from seminar 3. """
+
     def __init__(self, n):
         self.n = n
         self.counter = 0
         self.mutex = Mutex()
         self.turnstile1 = Semaphore(0)
         self.turnstile2 = Semaphore(0)
+
+    """
+        Modified wait function of the barrier introduced on seminar 5 last year.
+        The modification contains print functions for each thread and a special one for the last thread.
+        
+        :param each: message to be printed by each thread
+        :param last: message to be printed by last thread       
+    """
 
     def wait(self, each=None, last=None):
         self.mutex.lock()
@@ -47,6 +57,8 @@ class SimpleBarrier:
 
 
 class Shared:
+    """Represent shared data for all threads."""
+
     def __init__(self, servings):
         self.savages_mutex = Mutex()
         self.chefs_mutex = Mutex()
@@ -55,25 +67,46 @@ class Shared:
         self.full_pot = Event()
         self.empty_pot = Event()
 
-        self.barrier_1 = SimpleBarrier(SAVAGES_COUNT)
-        self.barrier_2 = SimpleBarrier(SAVAGES_COUNT)
+        self.barrier_1_savages = SimpleBarrier(SAVAGES_COUNT)
+        self.barrier_2_savages = SimpleBarrier(SAVAGES_COUNT)
 
         self.barrier_1_cooks = SimpleBarrier(CHEFS_COUNT)
         self.barrier_2_cooks = SimpleBarrier(CHEFS_COUNT)
 
 
 def eat(i: int):
+    """
+        Simulate eating.
+
+        :param i: savage's id
+    """
     print(f'SAVAGE-{i}- is feasting.')
+    sleep(1.5)
+
+
+def cook_portion(i: int):
+    """
+        Simulate cooking.
+
+        :param i: cook's id
+    """
+    print(f'COOK-{i}- is cooking.')
     sleep(1)
 
 
 def savage(i: int, shared: Shared):
+    """
+        Run savage's code.
+
+        :param i: savage's id
+        :param shared: shared data
+    """
     while True:
-        shared.barrier_1.wait()
-        shared.barrier_2.wait(each=f'SAVAGE-{i}-: Came for dinner.',
-                              last=f'SAVAGE-{i}-: We are all, let\'s '
-                                   f'have a look at the pot'
-                                   f'.\n----------------------------------------------------------------------')
+        shared.barrier_1_savages.wait()
+        shared.barrier_2_savages.wait(each=f'SAVAGE-{i}-: Came for dinner.',
+                                      last=f'SAVAGE-{i}-: We are all, let\'s '
+                                           f'have a look at the pot'
+                                           f'.\n----------------------------------------------------------------------')
         shared.savages_mutex.lock()
         print(f'SAVAGE-{i}-: Arrived, there is {shared.pot_portions} portions left.')
 
@@ -90,6 +123,12 @@ def savage(i: int, shared: Shared):
 
 
 def cook(i: int, shared: Shared):
+    """
+        Run cook's code.
+
+        :param i: cook's id
+        :param shared: shared data
+    """
     while True:
         shared.barrier_1_cooks.wait()
         shared.barrier_2_cooks.wait(each=f'COOK-{i}-: Waiting for other chefs.',
@@ -98,6 +137,7 @@ def cook(i: int, shared: Shared):
         shared.chefs_mutex.lock()
         shared.empty_pot.wait()
         if shared.pot_portions < PORTIONS_COUNT:
+            cook_portion(i)
             shared.pot_portions += 1
             print(f'COOK-{i}-: Cooked a portion, now there are {shared.pot_portions} servings.')
 
