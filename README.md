@@ -77,19 +77,20 @@ The last thing we need is something for the signalisation. For the savages to no
 In this section I will explain the function that represents behaviour of the savages. The snippet have been reduced by control prints to make the code shorter. The commentaries have been added for better explanation.
 
 ```python
+def savage(i: int, shared: Shared)  
     while True:
-# the savages are waiting for each other
-shared.barrier_1_savages.wait()
-shared.barrier_2_savages.wait()
-shared.savages_mutex.lock()  # integrity of the pot
-if shared.pot_portions == 0:  # there is no more portions 
-    shared.empty_pot.signal()  # signal to the chefs that the pot is empty
-    shared.full_pot.clear()  # clear the event so it can be used again
-    shared.full_pot.wait()  # wait for the pot to be full
+        # the savages are waiting for each other
+        shared.barrier_1_savages.wait()
+        shared.barrier_2_savages.wait()
+        shared.savages_mutex.lock()  # integrity of the pot
+        if shared.pot_portions == 0:  # there is no more portions 
+            shared.empty_pot.signal()  # signal to the chefs that the pot is empty
+            shared.full_pot.clear()  # clear the event so it can be used again
+            shared.full_pot.wait()  # wait for the pot to be full
 
-shared.pot_portions -= 1  # take a portion 
-shared.savages_mutex.unlock()  # integrity have been satisfied
-eat(i)  # feast
+        shared.pot_portions -= 1  # take a portion 
+        shared.savages_mutex.unlock()  # integrity have been satisfied
+        eat(i)  # feast
 ```
 In the behaviour of the savage we can see all the synchronisation mechanisms used in the implementation of the task.
 
