@@ -65,7 +65,7 @@ The class Shared has been created and used to represent multiple information nee
 
 We need a variable to represent the shared pot. It is by variable pot_portions. At the program execution it is initialised to 0, as the chefs need to cook the meal first.
 
-As savages and cooks modify the content of the pot, we need to guarantee the integrity of the number of portions. That is the reason why we weed two mutexes, one for the savages eating from the pot (decreasing the number of portions) and the other one for the chefs, who are putting portions to the pot(increasing the number of portions).
+As savages and cooks modify the content of the pot, we need to guarantee the integrity of the number of portions. That is the reason why we weed two mutexes, one for the savages eating from the pot (decreasing the number of portions) and the other one for the chefs, who are putting portions to the pot (increasing the number of portions).
 
 In the task definition, it was mentioned that the savages eat only when they are together. For such a behavior we need a barrier.
 
@@ -89,7 +89,7 @@ def savage(i: int, shared: Shared)
             shared.full_pot.wait()  # wait for the pot to be full
 
         shared.pot_portions -= 1  # take a portion 
-        shared.savages_mutex.unlock()  # integrity have been satisfied
+        shared.savages_mutex.unlock()  # integrity has been satisfied
         eat(i)  # feast
 ```
 In the behaviour of the savage we can see all the synchronisation mechanisms used in the implementation of the task.
@@ -145,7 +145,9 @@ This was not specified in the task assignment, however, if there was no barrier 
 When all the chefs gather around the pot, first thing that is needed is to lock the pot, so the integrity of the pot would not be violated.
 Then they wait for the pot to be empty, as the savages need to finish up all the pot, before the chefs may start to cook again.
 
-If there is still space, the chef may cook and put the portion in the pot.
+If signal from the savages came, that the pot is empty, the chefs may cook portions.
+
+If there is space in the pot, the chef cooks and puts the portion in the pot.
 
 If the pot is full, the chef signals to the savages, that the pot is full, and he also clears the event for empty pot, so it can be used later for signalisation by the savages.
 

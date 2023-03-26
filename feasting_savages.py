@@ -18,7 +18,7 @@ PORTIONS_COUNT: int = 8
 
 
 class SimpleBarrier:
-    """ Reusable barrier from seminar 3. """
+    """Reusable barrier from seminar 3. """
 
     def __init__(self, n):
         self.n = n
