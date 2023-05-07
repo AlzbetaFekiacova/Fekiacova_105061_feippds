@@ -31,8 +31,8 @@ def cpu_func(image_path):
     print(f"-CPU- Conversion to grayscale took : {end - start} seconds.")
 
     image_path_split = image_path.split(".")
-    image_path_split[0] = image_path[0] + "_grayscale_CPU"
-    image_path_output = "".join(image_path_split)
+    image_path_split[0] = image_path_split[0] + "_grayscale_CPU"
+    image_path_output = ".".join(image_path_split)
     plt.imsave(image_path_output, output_img, format="jpg")
 
 
