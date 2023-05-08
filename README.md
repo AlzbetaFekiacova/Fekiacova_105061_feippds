@@ -21,3 +21,6 @@ are the average conversion times.
 CPU and GPU conversion comparison. Add
 several examples of converted images. Don't forget to mention what
 computation have been used for the conversion.
+-------------------
+## Sources
+[Images source](https://pixabay.com/)
