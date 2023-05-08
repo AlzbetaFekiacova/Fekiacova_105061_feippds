@@ -31,6 +31,7 @@ def cpu_func(image_path):
     end = timer()
     print(f"-CPU- Conversion to grayscale took : {end - start} seconds.")
 
+    image_path = image_path.replace("original", "transformed_CPU")
     image_path_split = image_path.split(".")
     image_path_split[0] = image_path_split[0] + "_grayscale_CPU"
     image_path_output = ".".join(image_path_split)
@@ -38,10 +39,12 @@ def cpu_func(image_path):
 
 
 def cpu_main():
-    basic_path = "images/flower"
-    for i in range(16):
+    basic_path = "images/original/flower_s"
+    for i in range(20):
         current_path = basic_path + str(i) + ".jpg"
         cpu_func(current_path)
+
+
 @cuda.jit
 def rgb_to_gray_cuda(input_image, output_image):
     x, y = cuda.grid(2)
@@ -90,4 +93,4 @@ def gpu_main():
 
 
 if __name__ == '__main__':
-    gpu_main()
+    cpu_main()
