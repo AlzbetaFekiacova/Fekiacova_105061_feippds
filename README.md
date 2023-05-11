@@ -22,5 +22,18 @@ CPU and GPU conversion comparison. Add
 several examples of converted images. Don't forget to mention what
 computation have been used for the conversion.
 -------------------
+## TASK SOLUTION:
+Source code contains implementation of converting colour image to grayscale both on CPU and GPU. The implementation can be found in file [cuda_task.py](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/blob/05/cuda_task.py).
+Python version 3.10.x is necessary.
+To execute the program you need to have multiple modules installed: 
+-  `fei.ppds`  module
+-   `numpy`  module
+-  `matplotlib`  module
+-  `matplotlib`  module
+-  `numba`  compiler
+
+
+Installation can be done via `pip install` in the console or directly through PyCharm IDE through Python Packages. Source code contains `if __name__ == "__main__"` idiom, so the program will be executed when you run the file. 
+When you run the code, first gray scaling of 20 test images on CPU is executed, then gray scaling on GPU is executed on the same set of testing images. Converted images are stored into separate files.
 ## Sources
 [Images source](https://pixabay.com/)
