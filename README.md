@@ -100,10 +100,10 @@ took.
 At first, I executed the conversion on bigger images. The conversion on emulator took a long time, so I have switched to
 smaller images with size of 427x640. The images can be found
 in [package flowers original](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/original)
-I have downloaded 20 images of flowers and the result were following. They can be found 
+I have downloaded 20 images of flowers and the result were following. They can be found
+
 - [package flowers converted CPU](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/transformed_CPU)
 - [package flowers converted GPU](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/transformed_GPU)
-
 
 Original ![](images/original/flower_s0.jpg)
 
@@ -113,7 +113,6 @@ CPU transformation
 GPU transformation
 ![](images/transformed_GPU/flower_s0_grayscale_GPU.jpg)
 
-
 Original ![](images/original/flower_s2.jpg)
 
 CPU transformation
@@ -122,11 +121,12 @@ CPU transformation
 GPU transformation
 ![](images/transformed_GPU/flower_s2_grayscale_GPU.jpg)
 
+Then I wanted to download more images of flowers, but I got sick so I executed the next test on 100 sports image
+database we got on
+SUNS. The images have size of 224x224, they can be found
+in [package sports original](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/copied)
 
-Then I wanted to download more images of flowers, but I got sick so I executed the next test on 100 sports image database we got on
-SUNS. The images have size of 224x224, they can be found in [package sports original](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/copied)
-
-Transformed images can be found in 
+Transformed images can be found in
 
 - [package sports converted CPU](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/sports_transformed_CPU)
 
@@ -156,13 +156,24 @@ CPU transformation
 GPU transformation
 ![](images/sports_transformed_GPU/image_3_grayscale_GPU.jpg)
 
-
 ``Average conversion of 100 images on CPU took -0.48459530202206225- time.``
 
 ``Average conversion of 100 images on GPU took -18.525209265998566- time.``
 
+### Conclusion
+
+I have successfully implemented conversion of coloured image to grayscale both on CPU and GPU. I have tested my code on
+more that 100 images of different sizes. The GPU conversion overall took longer, but it was due to emulator. 
+
 -----------------------
 
 ## Sources
-
 [Images source](https://pixabay.com/)
+
+SUNS 2022 - Zadanie 3
+
+Seminar 2.5.2023
+
+Seminar 9.5.2023
+
+[Image conversion](https://www.had2know.org/technology/rgb-to-gray-scale-converter.html)
