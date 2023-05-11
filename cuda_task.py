@@ -26,26 +26,28 @@ def rgb_to_gray(input_image):
     return output_image
 
 
-def cpu_func(image_path, cpu_time):
+def cpu_func(image_path):
     input_pixels = plt.imread(image_path)
     start = timer()
     converted_image = rgb_to_gray(input_pixels)
     output_img = np.clip(converted_image, 0, 255).astype(np.uint8)
     end = timer()
     print(f"-CPU- Conversion to grayscale took : {end - start} seconds.")
-    cpu_time += (end - start)
     image_path = image_path.replace("copied", "sports_transformed_CPU")
     image_path_split = image_path.split(".")
     image_path_split[0] = image_path_split[0] + "_grayscale_CPU"
     image_path_output = ".".join(image_path_split)
     plt.imsave(image_path_output, output_img, format="jpg")
+    return end - start
 
 
-def cpu_main(cpu_time):
+def cpu_main():
     basic_path = "images/copied/image_"
+    cpu_time = 0
     for i in range(100):
         current_path = basic_path + str(i) + ".jpg"
-        cpu_func(current_path, cpu_time)
+        cpu_time += cpu_func(current_path)
+    return cpu_time
 
 
 @cuda.jit
@@ -55,7 +57,7 @@ def rgb_to_gray_cuda(input_image, output_image):
         output_image[x, y] = convert_image(input_image, x, y)
 
 
-def cuda_func(image_path, gpu_time):
+def cuda_func(image_path):
     image = plt.imread(image_path)
     height = image.shape[0]
     weight = image.shape[1]
@@ -74,7 +76,6 @@ def cuda_func(image_path, gpu_time):
     rgb_to_gray_cuda[blocks_per_grid, threads_per_block](d_input_image, d_output_image)
     end = timer()
     print(f'-GPU- Conversion to grayscale took {end - start} seconds')
-    gpu_time += (end - start)
 
     output_img = np.clip(d_output_image.copy_to_host(), 0, 255).astype(np.uint8)
 
@@ -83,20 +84,21 @@ def cuda_func(image_path, gpu_time):
     image_path_split[0] = image_path_split[0] + "_grayscale_GPU"
     image_path_output = ".".join(image_path_split)
     plt.imsave(image_path_output, output_img, format="jpg")
+    return end - start
 
 
-def gpu_main(gpu_time):
+def gpu_main():
     basic_path = "images/copied/image_"
+    gpu_time = 0
     for i in range(100):
         current_path = basic_path + str(i) + ".jpg"
-        cuda_func(current_path, gpu_time)
+        gpu_time += cuda_func(current_path)
+    return gpu_time
 
 
 if __name__ == '__main__':
-    cpu_time = 0
-    gpu_time = 0
-    cpu_main(cpu_time)
-    gpu_main(gpu_time)
+    c_time = cpu_main()
+    g_time = gpu_main()
 
-    print(f'Average conversion time on CPU took -{cpu_time/100}-')
-    print(f'Average conversion time on GPU took -{gpu_time/100}-')
+    print(f'Average conversion time on CPU took -{c_time / 100}-')
+    print(f'Average conversion time on GPU took -{g_time / 100}-')
