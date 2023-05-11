@@ -85,9 +85,15 @@ Then we also need to define number of threads per block by `threads_per_block = 
 contain 16 threads horizontally and 16 threads vertically.
 We also need to compute number of blocks per grid in both directions. It can be done simply via
 division `dimension // threads_per_block_in_that_direction`
-We can finally start the timer, then 
-call `rgb_to_gray_cuda[blocks_per_grid, threads_per_block](d_input_image, d_output_image)`, end timer and save the converted image.
+We can finally start the timer, then
+call `rgb_to_gray_cuda[blocks_per_grid, threads_per_block](d_input_image, d_output_image)`, end timer and save the
+converted image.
 
+#### Code executed in a loop
+
+Both of these functions `cuda_func(image_path)` and `cpu_func(image_path)` are executed in a loop over all the images in
+separate functions `cpu_main` and `gpu_main.` They both return total sum of time conversion of all the images
+took.
 
 -----------------------
 
