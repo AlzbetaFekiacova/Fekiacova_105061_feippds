@@ -100,10 +100,14 @@ took.
 At first, I executed the conversion on bigger images. The conversion on emulator took a long time, so I have switched to
 smaller images with size of 427x640. The images can be found
 in [package flowers original](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/original)
-I have downloaded 20 images of flowers and the result were following. They can be found
+I have downloaded 20 images of flowers and the results can be found in:
 
 - [package flowers converted CPU](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/transformed_CPU)
 - [package flowers converted GPU](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/transformed_GPU)
+
+``Average conversion of 20 images on CPU took -0.4439749399898574 time.-``
+
+``Average conversion of 20 images on GPU took -19.09008324999828 time.-``
 
 Original ![](images/original/flower_s0.jpg)
 
@@ -121,7 +125,7 @@ CPU transformation
 GPU transformation
 ![](images/transformed_GPU/flower_s2_grayscale_GPU.jpg)
 
-Then I wanted to download more images of flowers, but I got sick so I executed the next test on 100 sports image
+Then I wanted to download more images of flowers, but I got sick s,o I executed the next test on 100 sports image
 database we got on
 SUNS. The images have size of 224x224, they can be found
 in [package sports original](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/copied)
@@ -163,14 +167,15 @@ GPU transformation
 ### Conclusion
 
 I have successfully implemented conversion of coloured image to grayscale both on CPU and GPU. I have tested my code on
-more that 100 images of different sizes. The GPU conversion overall took longer, but it was due to emulator. 
+more than 100 images of different sizes. The GPU conversion overall took longer, but it was due to emulator. 
 
 -----------------------
 
 ## Sources
+
 [Images source](https://pixabay.com/)
 
-SUNS 2022 - Zadanie 3
+SUNS 2022 - TASK 3
 
 Seminar 2.5.2023
 
