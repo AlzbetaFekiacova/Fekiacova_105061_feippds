@@ -95,6 +95,72 @@ Both of these functions `cuda_func(image_path)` and `cpu_func(image_path)` are e
 separate functions `cpu_main` and `gpu_main.` They both return total sum of time conversion of all the images
 took.
 
+### TESTING
+
+At first, I executed the conversion on bigger images. The conversion on emulator took a long time, so I have switched to
+smaller images with size of 427x640. The images can be found
+in [package flowers original](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/original)
+I have downloaded 20 images of flowers and the result were following. They can be found 
+- [package flowers converted CPU](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/transformed_CPU)
+- [package flowers converted GPU](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/transformed_GPU)
+
+
+Original ![](images/original/flower_s0.jpg)
+
+CPU transformation
+![](images/transformed_CPU/flower_s0_grayscale_CPU.jpg)
+
+GPU transformation
+![](images/transformed_GPU/flower_s0_grayscale_GPU.jpg)
+
+
+Original ![](images/original/flower_s2.jpg)
+
+CPU transformation
+![](images/transformed_CPU/flower_s2_grayscale_CPU.jpg)
+
+GPU transformation
+![](images/transformed_GPU/flower_s2_grayscale_GPU.jpg)
+
+
+Then I wanted to download more images of flowers, but I got sick so I executed the next test on 100 sports image database we got on
+SUNS. The images have size of 224x224, they can be found in [package sports original](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/copied)
+
+Transformed images can be found in 
+
+- [package sports converted CPU](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/sports_transformed_CPU)
+
+- [package sports converted GPU](https://github.com/AlzbetaFekiacova/Fekiacova_105061_feippds/tree/05/images/sports_transformed_GPU)
+
+Original ![](images/copied/image_0.jpg)
+
+CPU transformation
+![](images/sports_transformed_CPU/image_0_grayscale_CPU.jpg)
+
+GPU transformation
+![](images/sports_transformed_GPU/image_0_grayscale_GPU.jpg)
+
+Original ![](images/copied/image_1.jpg)
+
+CPU transformation
+![](images/sports_transformed_CPU/image_1_grayscale_CPU.jpg)
+
+GPU transformation
+![](images/sports_transformed_GPU/image_1_grayscale_GPU.jpg)
+
+Original ![](images/copied/image_3.jpg)
+
+CPU transformation
+![](images/sports_transformed_CPU/image_3_grayscale_CPU.jpg)
+
+GPU transformation
+![](images/sports_transformed_GPU/image_3_grayscale_GPU.jpg)
+
+
+``Average conversion of 100 images on CPU took -0.48459530202206225- time.``
+
+``Average conversion of 100 images on GPU took -18.525209265998566- time.``
+
 -----------------------
 
 ## Sources
