@@ -181,4 +181,6 @@ Seminar 2.5.2023
 
 Seminar 9.5.2023
 
+[Chat GPT](https://chat.openai.com/)
+
 [Image conversion](https://www.had2know.org/technology/rgb-to-gray-scale-converter.html)
