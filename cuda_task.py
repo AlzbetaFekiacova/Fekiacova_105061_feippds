@@ -1,4 +1,4 @@
-"""This module shows basic usage of cuda using numba."""
+"""This module contains grayscale conversion of image on CPU and GPU with usage of cuda using numba."""
 
 __authors__ = "Marián Šebeňa, Matúš Jókay, Tomáš Vavro, Alžbeta Fekiačová"
 __email__ = "mariansebena@stuba.sk, xvavro@stuba.sk, xfekiacova@stuba.sk"
